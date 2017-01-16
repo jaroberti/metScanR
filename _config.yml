@@ -1,0 +1,8 @@
+title: "NEON FSU: Coding Support Group"
+description: A repository for archiving and sharing code related to the FSU Coding Support Group and FSU activities
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-leap-day
+
+gems:
+  - jekyll-mentions
