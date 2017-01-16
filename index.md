@@ -6,11 +6,9 @@
 
 ## Description
 
-```
-$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-```
+TL;DR: Here, we introduce the metScanR package for the R Programming language. This easy to use package will enable individuals to search for meteorological data near a region of interest across numerous networks, based on key parameters such as variable names and dates. Additionally, it compiles the results of the search into usable R formats, e.g., lists and data frames, including key station identifiers that enable users to find and download the data. When fully implemented, the package will be able to collate and export meteorological data from multiple networks. This R package will thus increase the efficiency and ease for individuals to obtain [Climate OR Met]  data from various sensor networks.    
+
+The need for diverse users to access environmental data is growing. Meteorologists and climatologists use these data to construct models, earth and environmental scientists require climate data to study ecosystems, and policy makers rely on climate data for decision support. Although an abundance of freely available meteorological data exists throughout the United States, gathering it from the varied monitoring networks can be arduous. This is especially true if users are interested in numerous data types from different networks. For instance, a scientist might require soil moisture, solar radiation, and wind vector components to properly investigate and reconstruct local climate for a region of interest. At present, it is very difficult to determine what data are available in the area and how, where, and when they were collected. For example, variables of interest may not have been collected nearby, or sites that do report these variables may not have been active during the time period of interest. This in turn leads to a large number of wasted hours trying to find and gather freely available [Climate OR Met] data.
 
 ## Release Notes
 
