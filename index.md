@@ -1,4 +1,4 @@
-# metScanR
+# metScanR: An R Package for Gathering Meteorological Data from Various Networks
 
 ## Tutorials
 
@@ -19,13 +19,16 @@ The need for diverse users to access environmental data is growing. Meteorologis
 ### Future Features
 
 * We are currently working on writing functions that adapt the functionality of existing R packages to help a metScanR user download data
-** Currently focused on writing functionality for downloading daily MET data from ACIS: http://www.rcc-acis.org/
+	* Currently focused on writing functionality for downloading daily MET data from ACIS: http://www.rcc-acis.org/
 * More MET networks
 
 
 ### Contacts
 
 [Josh Roberti](jroberti@BattelleEcology.org)
+
 [Lee Stanish](lstanish@BattelleEcology.org)
+
 [Samantha Weintraub](sweintraub@BattelleEcology.org)
+
 [Cody Flagg](cflagg@BattelleEcology.org)
