@@ -1,5 +1,7 @@
 # metScanR: An R Package for Gathering Meteorological Data from Various Networks
 
+![metScanR mapSiteFinder function in action -- using Leaflet to visualize MET station data](https://cflagg.github.io/metScanR/intro_img1.png)
+
 ## Tutorials
 
 [Introductory metScanR Tutorial](https://cflagg.github.io/metScanR/tutorials/intro.html)
