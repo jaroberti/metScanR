@@ -48,26 +48,28 @@ An object, metScanR_DB, is imported into the metScanR environment when the libra
 
 If we return an object named "data" from a `getVars` function call, the data are formatted like so (with a description in parentheses): 
 
-* data$station_id (unique identifier)
-* data$station_id$namez 
-* data$station_id$identifiers (associated MET networks)
-  * data$station_id$identifiers$idType
-  * data$station_id$identifiers$id
-* data$station_id$platform (primary MET network)
-* data$station_id$elements (environmental variables)
-  * data$station_id$elements$element
-  * data$station_id$elements$date.begin
-  * data$station_id$elements$date.end
-* data$station_id$location
-  * data$station_id$location$latitude_dec
-  * data$station_id$location$longitude_dec
-  * data$station_id$location$elev
-  * data$station_id$location$country
-  * data$station_id$location$state  
-  * data$station_id$location$county
-  * data$station_id$location$utcoffset  
-  * data$station_id$location$date.begin
-  * data$station_id$location$date.end  
+* data$<station_id> (unique identifier) [example: data$USC00226177]
+* data$<station_id>$namez 
+* data$<station_id>$identifiers (associated MET networks)
+  * data$<station_id>$identifiers$idType
+  * data$<station_id>$identifiers$id
+* data$<station_id>$platform (primary MET network)
+* data$<station_id>$elements (environmental variables)
+  * data$<station_id>$elements$element
+  * data$<station_id>$elements$date.begin
+  * data$<station_id>$elements$date.end
+* data$<station_id>$location
+  * data$<station_id>$location$latitude_dec
+  * data$<station_id>$location$longitude_dec
+  * data$<station_id>$location$elev
+  * data$<station_id>$location$country
+  * data$<station_id>$location$state  
+  * data$<station_id>$location$county
+  * data$<station_id>$location$utcoffset  
+  * data$<station_id>$location$date.begin
+  * data$<station_id>$location$date.end  
+  
+TODO snapshot of one station's actual output
 
 ## Future Directions
 
@@ -100,11 +102,13 @@ In this example we'll do the following:
 
 * Locate meteorological data of interest
 * Navigate metScanR's nested list structure
+    * how to pull common values out of all list elements
+    * how to count number of SCAN stations (`r length(getNetwork("SCAN"))`)
 * Explore environmental variables listed in metScanR_DB
 * Cool things you can do in metScanR v1.0.0
     * Find Rarely Monitored Variables: `getVars()` "conductivity", turbidity, ground water, gauge height
     * Map networks or variables: `getNetwork`, `mapsiteFinder(getVars("conductivity"))`
-    * Map global network (GHCND)
+    * Map global network (SCAN)
     * Find stations with potentially correlated variables for modeling: "groundwater", "snow depth", "soil moisture" > intersect(names(list1), names(list2)) > feed into `getStation()`
     * Find the longest time series: `getDates(start = "1800", end = "2015")`
 * Interactively visualize data with Leaflet
@@ -156,6 +160,12 @@ sf_getter(scenario1, "identifiers", "idType")
 
 # collapse into a data frame -- this only works for list elements that have the same dimensions
 plyr::ldply(sf_getter(scenario1, "platform"))
+
+## combine uneven vectors
+ldply(sf_getter(scenario1, "identifiers", "idType"), rbind)
+
+## base R alternative -- outputs repeat
+do.call(rbind, sf_getter(scenario1, "identifiers", "idType"))
 ```
 
 ## Explore environmental variables listed in metScanR_DB
@@ -174,7 +184,6 @@ In the search bar, typing in a term like "temperature" will narrow the number of
 library(jsonlite)
 library(httr)
 library(plyr)
-library(metScanR)
 
 ########################################################################################
 ############################################ Get Single ACIS Station Function
@@ -182,8 +191,7 @@ library(metScanR)
 ## check if any of these ID columns in the input is not null
 ## date format= "YYYY-MM-DD"
 get_single_acis <- function(sid, start_date,end_date,vars="mint,maxt,avgt,pcpn,snow,snwd,obst"){
-  # pull station meta-data!
-  #vars <- "mint,maxt,avgt,pcpn,snow,snwd,obst"
+
   params <- list(sid = sid, elems = vars, sdate = start_date, edate = end_date, output = "json")
   #req <- httr::POST(url = "http://data.rcc-acis.org/MultiStnData", body = params, encode='json')  
   req <- httr::POST(url = "http://data.rcc-acis.org/StnData", body = params, encode='json')
@@ -209,8 +217,21 @@ olddata <- get_single_acis("226177", start_date="1800-01-01", end_date="2009-12-
 head(olddata)
 tail(olddata)
 
+olddata$year <- stringr::str_sub(olddata$date, 1, 4)
+
+olddata$maxt <- ifelse(olddata$maxt=="M", NA, olddata$maxt)
+
+olddata2 <- ddply(olddata, ~year, summarize, maxtt=mean(maxt, na.rm=TRUE))
+
 library(ggplot2)
-#ggplot(data = olddata, aes(x = date, y = avgt)) + geom_point()
+ggplot(olddata2, aes(x = year, y = maxtt)) + geom_point() + geom_line()
+
+plot(olddata2$year, olddata2$maxtt, type = "b")
+```
+
+```{r}
+## Save huge map as a PDF or png to share
+savemap <- mapSiteFinder(getNetwork("SCAN"))
 ```
 
 
