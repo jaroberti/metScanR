@@ -8,43 +8,80 @@ output: html_document
 # metScanR
 
 
-
 ## Summary 
 
-metScanR is an R package that enables users to quickly locate and work with freely available meteorological (MET) data across multiple networks. This package can currently find data across **13,368** stations among **11** different networks simultaneously (US only). The wide range of networks and their associated, but varying documentation, meta-data, data formats, and even station identifiers can pose a major roadblock to finding, wrangling, and synthesizing MET data. 
+metScanR is an R package that enables users to quickly locate and work with freely available meteorological (MET) data across multiple networks. This package can currently find data across **107,000** stations among **18** different networks across the globe. The wide range of networks and their associated, but varying documentation, meta-data, data formats, and even station identifiers can pose a major roadblock to finding, wrangling, and synthesizing MET data. 
 
 metScanR currently allows for a user to 'bypass' many steps involved in finding MET data. A user can: 
 
-* specify a location, 
+* specify a location 
 * search distance range
 * sampling date ranges
 * MET network (COOP, USCRN, USRCRN, ASOS, AWOS, SNOTEL, SCAN, NEON)
 * meteorological variables 
 
-metScanR will return an R data.frame listing of all weather stations that meet the criteria.  
+metScanR will return an R list object containing all weather stations that meet the criteria. metScanR also empowers users to explore data by providing an interactive map of all returned MET stations (powered by Leaflet). 
 
-metScanR also empowers users to explore data by providing an interactive map of all returned MET stations (powered by Leaflet). 
+### Version Updates: From 0.0.1 to 1.0.0 
+
+The release of version 1.0.0 has brought not only more MET station data (from 13,000 stations to 107,000) but enhanced functionality. The expansion in MET station data required a total re-working of how data are stored and accessed. The current data set occupies a 600 megabyte binary file; this large file is loaded from a remote GitHub repo into R's 'background' when the package is loaded. 
+
+A 10x increase in data also necessitated a new data structure, nested lists, and functions to  access those data. A series of `get...` functions are now used to quickly pull data from the metScanR_DB object. Storing data as a list rather than a data frame has two key benefits: (1) lists take up less disk space (and random access memory) and (2) lists are processed much more quickly. 
+
+## Core Functions
+
+* `siteFinder` : an all in one "wrapper" that accesses the functionality of several lower level `get` functions (listed below)
+    * _Note_: using the `get` functions directly will return data more quickly
+* `mapSiteFinder` : will map the outputs returned from `siteFinder` and/or `get` functions 
+* `getCountry` : query MET stations by country of origin
+* `getDates` : query by startdate, enddate, or date range (startdate AND enddate)
+* `getElevation` : query by station elevation
+* `getId` : find specific stations by unique identifier
+* `getNearby` : find stations near a specific location and radius
+* `getNetwork` : return list of stations from a given MET network
+* `getVars` : query stations by environmental variables measured
+    * _Note_: this function employs a 'fuzzy search' to parse through the hundreds of variables measured across MET stations. As an example, a user can narrow the granularity of their search by increasing the number of key words entered e.g. one can search for "wind", "wind speed", or "5-second wind speed". 
+
+## Meta-Data Structure
+
+An object, metScanR_DB, is imported into the metScanR environment when the library is loaded in R. This metScanR_DB object contains all meta-data for the MET stations captured by this project. All `metScanR` functions return meta-data in a nested list that follows the same general format. 
+
+If we return an object named "data" from a `getVars` function call, the data are formatted like so (with a description in parentheses): 
+
+* data$station_id (unique identifier)
+* data$station_id$namez 
+* data$station_id$identifiers (associated MET networks)
+  * data$station_id$identifiers$idType
+  * data$station_id$identifiers$id
+* data$station_id$platform (primary MET network)
+* data$station_id$elements (environmental variables)
+  * data$station_id$elements$element
+  * data$station_id$elements$date.begin
+  * data$station_id$elements$date.end
+* data$station_id$location
+  * data$station_id$location$latitude_dec
+  * data$station_id$location$longitude_dec
+  * data$station_id$location$elev
+  * data$station_id$location$country
+  * data$station_id$location$state  
+  * data$station_id$location$county
+  * data$station_id$location$utcoffset  
+  * data$station_id$location$date.begin
+  * data$station_id$location$date.end  
 
 ## Future Directions
 
-In the near future, metScanR will provide functionality for  directly downloading MET data via existing APIs. 
+In the near future, metScanR will provide functionality for  directly downloading MET data via existing APIs. We are also planning on including meta-data from Ameriflux and NADP stations. 
 
 ## Installation
 
 * Install official releases from CRAN with 
 
+
 ```{r eval=FALSE}
 install.packages("metScanR")
 ```
 
-* Install the latest developmental version from Github via
-
-```{r eval=FALSE}
-if (packageVersion("devtools") < 1.6) {
-  install.packages("devtools")
-}
-devtools::install_github("jaroberti/metScanR")
-```
 
 If you encounter a bug, please provide a reproducible example on this package's [github issues](https://github.com/cflagg/metScanR/issues) page. 
 
@@ -54,16 +91,23 @@ This brief tutorial is intended for users that are both familiar and unfamiliar 
 
 A general workflow for locating meteorological data is outlined below.
 
-There are currently two functions: 
+There are two primary functions that a user can interact with:  
 
-* `siteFinder`: searches for MET stations, returns a _siteFinder_ object
-* `mapSiteFinder`: takes a _siteFinder_ object as an input, returns an interactive Leaflet map of all stations in the _siteFinder_ object
+* `siteFinder`: searches for MET stations, returns a nested list
+* `mapSiteFinder`: takes a nested list returned by _siteFinder_, returns an interactive Leaflet map of all stations in the list
 
 In this example we'll do the following:
 
 * Locate meteorological data of interest
-* Examine the station meta-data in RStudio
-* Interactively view the data with Leaflet
+* Navigate metScanR's nested list structure
+* Explore environmental variables listed in metScanR_DB
+* Cool things you can do in metScanR v1.0.0
+    * Find Rarely Monitored Variables: `getVars()` "conductivity", turbidity, ground water, gauge height
+    * Map networks or variables: `getNetwork`, `mapsiteFinder(getVars("conductivity"))`
+    * Map global network (GHCND)
+    * Find stations with potentially correlated variables for modeling: "groundwater", "snow depth", "soil moisture" > intersect(names(list1), names(list2)) > feed into `getStation()`
+    * Find the longest time series: `getDates(start = "1800", end = "2015")`
+* Interactively visualize data with Leaflet
 * Export the meta-data to a .CSV file
 
 ## 
@@ -74,44 +118,108 @@ In this example we'll do the following:
 
 Find station meta-data near a given coordinate, assign the output to object `scenario1`:
 
+* __NOTE__: loading the metScanR library will take longer than normal (20-30 seconds) as it loads the large MET station data set into R
+
 ```{r}
 library(metScanR)
-scenario1 <- siteFinder(Lat=40.05,Lon=-105.27,startDate="2000-01-05",radius=45) # returns 40 stations
+scenario1 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45) # returns 40 stations
 ```
 
 We can also specify more narrowly the type of data we want returned, for example only COOP stations that have air temperature: 
 
 ```{r}
-scenario1 <- siteFinder(Lat=40.05,Lon=-105.27,startDate="2000-01-05",radius=45,network="COOP",vars="AIR_TEMP") # returns 21 stations
+scenario1 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45,network="COOP",vars="air temperature") # returns 15 stations
 ```
 
-### Scenario 2: locate meta-data near National Ecological Observatory Network (NEON) sites
+The siteFinder function returns a list object with elements described above. 
 
-metScanR functions were originally designed to return meteorological data near NEON sites to assist with observatory commissioning. A four-letter NEON site code can be passed to siteFinder instead e.g.: 
+We can also narrow our search to more specific variables of interest via the 'fuzzy search' functionality in the `vars` parameter: 
 
 ```{r}
-scenario2 <- siteFinder(NEON.site="HARV",startDate="2000-01-05",radius=45,vars="AIR_TEMP") # returns 18 stations from 4 networks
+#scenario1 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45,network="COOP",vars="1-minute wind speed") # returns 15 stations
 ```
 
-The siteFinder function returns a list object with two elements: 
-
-* `LAT.LON`: the latitude and longitude specified 
-* `finalResults`: a data.frame containing the station meta-data
-
-## View raw station meta-data
-
-Users may want to examine the date ranges or weather variables associated with a station (recall that this information is in the `finalResults` element of the siteFinder object) The following function will neatly display the data in a tabular format if executed in the RStudio IDE: 
+## Navigate metScanR's nested list structure
 
 ```{r}
-View(scenario1$finalResult)
+## quickly extract data from the metScanR DB outputs
+sf_getter <- function(input, first, second=NULL){
+  if (is.null(second)){
+    lapply(input, "[[", first)
+  } else {
+    lapply(lapply(input, "[[", first), "[[", second)
+  }
+}
+
+# extract data from all stations returned
+sf_getter(scenario1, "identifiers", "idType")
+
+# collapse into a data frame -- this only works for list elements that have the same dimensions
+plyr::ldply(sf_getter(scenario1, "platform"))
 ```
 
-## Explore a map of returned station meta-data
+## Explore environmental variables listed in metScanR_DB
+
+There are 830 different environmental variables listed in the metScanR_DB. You can search through the list of terms associated with any station by combining two functions in RStudio, `View()` and plyr's `ldply`, to neatly display, and then search through, the data: 
+
+```{r}
+View(plyr::ldply(metScanR:::metScanR_terms))
+```
+
+In the search bar, typing in a term like "temperature" will narrow the number of rows displayed. 
+
+## Cool Stuff
+
+```{r}
+library(jsonlite)
+library(httr)
+library(plyr)
+library(metScanR)
+
+########################################################################################
+############################################ Get Single ACIS Station Function
+########################################################################################
+## check if any of these ID columns in the input is not null
+## date format= "YYYY-MM-DD"
+get_single_acis <- function(sid, start_date,end_date,vars="mint,maxt,avgt,pcpn,snow,snwd,obst"){
+  # pull station meta-data!
+  #vars <- "mint,maxt,avgt,pcpn,snow,snwd,obst"
+  params <- list(sid = sid, elems = vars, sdate = start_date, edate = end_date, output = "json")
+  #req <- httr::POST(url = "http://data.rcc-acis.org/MultiStnData", body = params, encode='json')  
+  req <- httr::POST(url = "http://data.rcc-acis.org/StnData", body = params, encode='json')
+  dat <- jsonlite::fromJSON(content(req, "text")) ## much better than parsing a csv
+  out <- as.data.frame(dat$data)
+  proceed <- ncol(out)
+  ## if for some reason there are no data -- keep going
+  if (proceed == 0){
+    return("NO DATA")
+  } else {
+    names(out) <- c("date", strsplit(vars, ",")[[1]])
+    print(sid)
+    out$sid <- sid
+    out$state #dat$meta$statedat$meta$state
+    return(out)
+  }
+}
+
+old <- getDates(startDate = "1800-01-01", endDate="2015-01-01")
+old$USC00226177
+
+olddata <- get_single_acis("226177", start_date="1800-01-01", end_date="2009-12-01")
+head(olddata)
+tail(olddata)
+
+library(ggplot2)
+#ggplot(data = olddata, aes(x = date, y = avgt)) + geom_point()
+```
+
+
+## Interactively visualize data with Leaflet
 
 The raw station meta-data can be viewed interactively by calling the `mapSiteFinder` function on a siteFinder object in RStudio e.g.: 
 
 ```{r}
-mapSiteFinder(scenario2)
+mapSiteFinder(scenario1)
 ```
 
 Users can pan, zoom, and click on stations to better visualize the spatial arrangement of stations and/or networks.  
@@ -122,7 +230,7 @@ Users can pan, zoom, and click on stations to better visualize the spatial arran
 Since metScanR only returns station meta-data at the moment (functionality for downloading station data directly will be implemented in the future), users may want a 'hard copy' .csv of station identifiers to plug into various APIs or websites supported by MET networks: 
 
 ```{r eval=FALSE}
-write.csv(x = scenario2$finalResults, file = "path/to/your/folder/metScanR_output.csv", na="")
+#write.csv(x = scenario1$finalResults, file = "path/to/your/folder/metScanR_output.csv", na="")
 ```
 
 You must specify a local file path for the output via the `file` argument. 
