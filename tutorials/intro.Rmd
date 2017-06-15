@@ -129,15 +129,17 @@ library(metScanR)
 scenario1 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45) # returns 40 stations
 ```
 
+### Scenario 2: locate data via location, MET network, and environmental variable of interest
+
 Our search can be narrowed to more specific variables of interest via the `vars` parameter. There are hundreds of weather/climatological variables included in the metScanR database. Rather than requiring the user to know the exact syntax, case, phrase, or network of variables before they search the database, we have implemented a 'fuzzy search' function that interprets a user's text input for the `vars` variable. The 'fuzzy search' function attempts to match the user's input against a large set of overlapping keywords for each variable listed in the database. 
 
 In this example we search for any variables associated with air temperature measurements:
 
 ```{r}
-scenario1 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45,network="COOP",vars="air temperature") # returns 15 stations
+scenario2 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45,network="COOP",vars="air temperature") # returns 15 stations
 ```
 
-Typing the object name `r scenario1` shows the resulting output, where values such as "TMAX", "TMIN", and "AVGT" are returned (i.e. variables associated with air temperature measurements). 
+Typing the object name `r scenario2` shows the resulting output, where values such as "TMAX", "TMIN", and "AVGT" are returned (i.e. variables associated with air temperature measurements). Note that an error message is the resulting output if none of the stations within the search  have variables that match the `vars` argument. 
 
 The next section walks you through how to browse through the many environmental variables logged by metScanR. 
 
@@ -153,9 +155,9 @@ In the search bar, typing in a term like "temperature" will narrow the number of
 
 ## Navigate metScanR's nested list meta-data structure
 
-Most R users, and data users in general, are familiar with tabular or table formatted data where information is organized in rows and columns. Because of the large volume of data contained within the metScanR database, it is necessary for the data to be stored and transferred as an R list object. The following vignette describes a method for manipulating metScanR's list output to quickly organize and summarize the information returned. 
+Most R users, and data users in general, are familiar with tabular or table formatted data where information is organized in rows and columns. Because of the large volume of data contained within the metScanR database, it is necessary for the data to be stored and transferred as an R list object. The following example describes a method for manipulating metScanR's list output to quickly organize and summarize the information returned. 
 
-Here we define a simple function that quickly extracts data values nested 1 or 2 'levels' within the metScanR output object. 
+Here we define a simple function that quickly extracts data values nested one "element" or two "sub-elements" within the metScanR output object. 
 
 ```{r}
 ## quickly extract data from the metScanR DB outputs
@@ -168,75 +170,50 @@ ls_getter <- function(input, first, second=NULL){
 }
 ```
 
-With this function we can quickly answer the question 
+With this function, and the data returned from `scenario1` above, we can begin to answer the question "What environmental variables are measured at the stations within my search radius?":
 
 ```{r}
 # extract data from all stations returned
-ls_getter(scenario1, "identifiers", "idType")
+ls_getter(scenario1, "elements", "element")
 ```
 
-```{r}
-# collapse into a data frame -- this only works for list elements that have the same dimensions
-do.call(rbind, ls_getter(scenario1, "platform"))
+Since every list element within the metScanR_DB has the same dimensions and data type, we can quickly coerce this 'slice' of the list (where the 'slice' is the list member and sub-member `elements$element`) into a vector by using base R functions `c`, `unique`, and `do.call`:
 
+```{r}
 ## base R alternative -- outputs repeat
+unique(do.call(c, ls_getter(scenario1, "elements", "element")))
+```
+
+We can also coerce the list output into a data frame using `rbind` and `do.call`: 
+
+```{r}
 do.call(rbind, ls_getter(scenario1, "identifiers", "idType"))
 ```
 
-## Cool Stuff
+Because the number of networks is uneven across this set of stations, `do.call` "fills in" some of the blanks by repeating the vector per station. A cleaner way to assemble this data frame (that introduces an 'NA' if the vector is uneven) is to use `ldply` from the `plyr` package: 
 
 ```{r}
-library(jsonlite)
-library(httr)
-library(plyr)
-
-########################################################################################
-############################################ Get Single ACIS Station Function
-########################################################################################
-## check if any of these ID columns in the input is not null
-## date format= "YYYY-MM-DD"
-get_single_acis <- function(sid, start_date,end_date,vars="mint,maxt,avgt,pcpn,snow,snwd,obst"){
-
-  params <- list(sid = sid, elems = vars, sdate = start_date, edate = end_date, output = "json")
-  #req <- httr::POST(url = "http://data.rcc-acis.org/MultiStnData", body = params, encode='json')  
-  req <- httr::POST(url = "http://data.rcc-acis.org/StnData", body = params, encode='json')
-  dat <- jsonlite::fromJSON(content(req, "text")) ## much better than parsing a csv
-  out <- as.data.frame(dat$data)
-  proceed <- ncol(out)
-  ## if for some reason there are no data -- keep going
-  if (proceed == 0){
-    return("NO DATA")
-  } else {
-    names(out) <- c("date", strsplit(vars, ",")[[1]])
-    print(sid)
-    out$sid <- sid
-    out$state #dat$meta$statedat$meta$state
-    return(out)
-  }
-}
-
-old <- getDates(startDate = "1800-01-01", endDate="2015-01-01")
-old$USC00226177
-
-olddata <- get_single_acis("226177", start_date="1800-01-01", end_date="2009-12-01")
-head(olddata)
-tail(olddata)
-
-olddata$year <- stringr::str_sub(olddata$date, 1, 4)
-
-olddata$maxt <- ifelse(olddata$maxt=="M", NA, olddata$maxt)
-
-olddata2 <- ddply(olddata, ~year, summarize, maxtt=mean(maxt, na.rm=TRUE))
-
-library(ggplot2)
-ggplot(olddata2, aes(x = year, y = maxtt)) + geom_point() + geom_line()
-
-plot(olddata2$year, olddata2$maxtt, type = "b")
+plyr::ldply(ls_getter(scenario1, "identifiers", "idType"), rbind)
 ```
+
+
+## Interesting Use Cases with metScanR
+
+### Find the oldest continuously monitoring weather station
+
+```{r}
+oldest <- getDates(startDate = "1800-01-01", endDate="2015-01-01") # search for stations that begin at the turn of the 19th century and monitor to 2015
+length(oldest) # count to see how many stations metScanR finds
+names(oldest) # see what the stationIDs are
+oldest$USC00226177
+```
+
+### Map an entire MET network
 
 ```{r}
 ## Save huge map as a PDF or png to share
-savemap <- mapSiteFinder(getNetwork("SCAN"))
+maps <- mapSiteFinder(getNetwork("SCAN"))
+maps
 ```
 
 
