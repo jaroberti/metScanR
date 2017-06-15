@@ -44,14 +44,14 @@ A 10x increase in data also necessitated a new data structure, nested lists, and
 
 ## Meta-Data Structure
 
-An object, metScanR_DB, is imported into the metScanR environment when the library is loaded in R. This metScanR_DB object contains all meta-data for the MET stations captured by this project. All `metScanR` functions return meta-data in a nested list that follows the same general format. 
+An object, metScanR_DB, is imported into the metScanR environment when the library is loaded in R. This metScanR_DB object contains all meta-data for the MET stations captured by this project. All `metScanR` functions return meta-data in a _nested and named list_ that follows the same general structure for every station in the database. 
 
-If we return an object named "data" from a `getVars` function call, the data are formatted like so (with a description in parentheses): 
+If we return an object named "data" from a `getVars` function call (e.g. `data <- getVars[1]`, this gives you the first list element or station of the metScanR_DB), the data are formatted as such (with a description in parentheses): 
 
-* data$<station_id> (unique identifier) [example: data$USC00226177]
+* data$<station_id> (unique identifier) [example: data$USW00094893]
 * data$<station_id>$namez 
-* data$<station_id>$identifiers (associated MET networks)
-  * data$<station_id>$identifiers$idType
+* data$<station_id>$identifiers (associated MET networks) [example: data$USW00094893$identifiers]
+  * data$<station_id>$identifiers$idType [example: data$USW00094893$identifiers$idType]
   * data$<station_id>$identifiers$id
 * data$<station_id>$platform (primary MET network)
 * data$<station_id>$elements (environmental variables)
@@ -129,44 +129,17 @@ library(metScanR)
 scenario1 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45) # returns 40 stations
 ```
 
-We can also specify more narrowly the type of data we want returned, for example only COOP stations that have air temperature: 
+Our search can be narrowed to more specific variables of interest via the `vars` parameter. There are hundreds of weather/climatological variables included in the metScanR database. Rather than requiring the user to know the exact syntax, case, phrase, or network of variables before they search the database, we have implemented a 'fuzzy search' function that interprets a user's text input for the `vars` variable. The 'fuzzy search' function attempts to match the user's input against a large set of overlapping keywords for each variable listed in the database. 
+
+In this example we search for any variables associated with air temperature measurements:
 
 ```{r}
 scenario1 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45,network="COOP",vars="air temperature") # returns 15 stations
 ```
 
-The siteFinder function returns a list object with elements described above. 
+Typing the object name `r scenario1` shows the resulting output, where values such as "TMAX", "TMIN", and "AVGT" are returned (i.e. variables associated with air temperature measurements). 
 
-We can also narrow our search to more specific variables of interest via the 'fuzzy search' functionality in the `vars` parameter: 
-
-```{r}
-#scenario1 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45,network="COOP",vars="1-minute wind speed") # returns 15 stations
-```
-
-## Navigate metScanR's nested list structure
-
-```{r}
-## quickly extract data from the metScanR DB outputs
-sf_getter <- function(input, first, second=NULL){
-  if (is.null(second)){
-    lapply(input, "[[", first)
-  } else {
-    lapply(lapply(input, "[[", first), "[[", second)
-  }
-}
-
-# extract data from all stations returned
-sf_getter(scenario1, "identifiers", "idType")
-
-# collapse into a data frame -- this only works for list elements that have the same dimensions
-plyr::ldply(sf_getter(scenario1, "platform"))
-
-## combine uneven vectors
-ldply(sf_getter(scenario1, "identifiers", "idType"), rbind)
-
-## base R alternative -- outputs repeat
-do.call(rbind, sf_getter(scenario1, "identifiers", "idType"))
-```
+The next section walks you through how to browse through the many environmental variables logged by metScanR. 
 
 ## Explore environmental variables listed in metScanR_DB
 
@@ -177,6 +150,38 @@ View(plyr::ldply(metScanR:::metScanR_terms))
 ```
 
 In the search bar, typing in a term like "temperature" will narrow the number of rows displayed. 
+
+## Navigate metScanR's nested list meta-data structure
+
+Most R users, and data users in general, are familiar with tabular or table formatted data where information is organized in rows and columns. Because of the large volume of data contained within the metScanR database, it is necessary for the data to be stored and transferred as an R list object. The following vignette describes a method for manipulating metScanR's list output to quickly organize and summarize the information returned. 
+
+Here we define a simple function that quickly extracts data values nested 1 or 2 'levels' within the metScanR output object. 
+
+```{r}
+## quickly extract data from the metScanR DB outputs
+ls_getter <- function(input, first, second=NULL){
+  if (is.null(second)){
+    lapply(input, "[[", first)
+  } else {
+    lapply(lapply(input, "[[", first), "[[", second)
+  }
+}
+```
+
+With this function we can quickly answer the question 
+
+```{r}
+# extract data from all stations returned
+ls_getter(scenario1, "identifiers", "idType")
+```
+
+```{r}
+# collapse into a data frame -- this only works for list elements that have the same dimensions
+do.call(rbind, ls_getter(scenario1, "platform"))
+
+## base R alternative -- outputs repeat
+do.call(rbind, ls_getter(scenario1, "identifiers", "idType"))
+```
 
 ## Cool Stuff
 
