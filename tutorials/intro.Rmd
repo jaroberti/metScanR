@@ -78,17 +78,17 @@ An object, metScanR_DB, is imported into the metScanR environment when the libra
 If we return an object named "data" from a `getVars` function call (e.g. `data <- getVars[1]`, this gives you the first list element or station of the metScanR_DB), the data are formatted as such (with a description in parentheses): 
 
 
-* data\$stationid (unique identifier) [example: data\$USW00094893]
+* data\$stationid **(unique identifier)** [example: data\$USW00094893]
 * data\$stationid\$namez 
-* data\$stationid\$identifiers (associated MET networks) [example: data\$USW00094893\$identifiers]
+* data\$stationid\$identifiers **(associated MET networks)** [example: data\$USW00094893\$identifiers]
     * data\$stationid\$identifiers\$idType [example: data\$USW00094893\$identifiers\$idType]
     * data\$stationid\$identifiers\$id 
-    * data\$stationid\$platform (primary MET network)
-* data\$stationid\$elements (environmental variables and start/end dates for monitoring)
+    * data\$stationid\$platform __(primary MET network)__
+* data\$stationid\$elements **(environmental variables and start/end dates for monitoring)**
     * data\$stationid\$elements\$element
     * data\$stationid\$elements\$date.begin
     * data\$stationid\$elements\$date.end
-* data\$stationid\$location (geographic information)
+* data\$stationid\$location **(geographic information)**
     * data\$stationid\$location\$latitude_dec
     * data\$stationid\$location\$longitude_dec
     * data\$stationid\$location\$elev
