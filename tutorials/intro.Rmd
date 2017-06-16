@@ -24,7 +24,7 @@ metScanR will return an R list object containing all weather stations that meet 
 
 # Tutorial Outline
 
-This brief tutorial is intended for users that are both familiar and unfamiliar with R. The R code higlighted below can be copy-pasted and executed inside an R script. 
+This tutorial is intended for users that are both familiar and unfamiliar with R. The R code higlighted below can be copy-pasted and executed inside an R script. 
 
 A general workflow for locating meteorological data is outlined below.
 
@@ -33,7 +33,7 @@ There are two primary functions that a user can interact with:
 * `siteFinder`: searches for MET stations, returns a nested list
 * `mapSiteFinder`: takes a nested list returned by _siteFinder_, returns an interactive Leaflet map of all stations in the list
 
-In this example we'll do the following:
+In this tutorial we'll do the following:
 
 * Search for meteorological data 
     * Find data by location
