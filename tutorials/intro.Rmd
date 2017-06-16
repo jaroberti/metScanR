@@ -1,7 +1,7 @@
 ---
 title: "metScanR Tutorial"
 author: "Cody Flagg"
-date: "January 16, 2017"
+date: "June 16, 2017"
 output: html_document
 ---
 
@@ -43,11 +43,11 @@ In this example we'll do the following:
     * How to count number of SCAN stations (`length(getNetwork("SCAN"))`)
 * Explore environmental variables listed in metScanR_DB
 * Practical Use Cases
-    * Find Rarely Monitored Variables: `getVars()` "conductivity", turbidity, ground water, gauge height
-    * Map networks or variables: `getNetwork`, `mapSiteFinder(getVars("conductivity"))`
+    * Find 'Rarely Monitored' Variables: `getVars()` "conductivity", turbidity, ground water, gauge height
+    * Map Networks or variables: `getNetwork`, `mapSiteFinder(getVars("conductivity"))`
     * Map global network (SCAN)
-    * Find stations with potentially correlated variables for modeling: "groundwater", "snow depth", "soil moisture" > intersect(names(list1), names(list2)) > feed into `getStation()`
     * Find the longest time series: `getDates(start = "1800", end = "2015")`
+    * Find multiple variables of interest where sensors/measurements are co-located
 * Interactively visualize data with Leaflet
 * Export the meta-data to a .CSV file
 
@@ -77,28 +77,27 @@ An object, metScanR_DB, is imported into the metScanR environment when the libra
 
 If we return an object named "data" from a `getVars` function call (e.g. `data <- getVars[1]`, this gives you the first list element or station of the metScanR_DB), the data are formatted as such (with a description in parentheses): 
 
-* data$<stationid> (unique identifier) [example: data$USW00094893]
-* data$<stationid>$namez 
-* data$<stationid>$identifiers (associated MET networks) [example: data$USW00094893$identifiers]
-  * data$<stationid>$identifiers$idType [example: data$USW00094893$identifiers$idType]
-  * data$<stationid>$identifiers$id
-* data$<stationid>$platform (primary MET network)
-* data$<stationid>$elements (environmental variables)
-  * data$<stationid>$elements$element
-  * data$<stationid>$elements$date.begin
-  * data$<stationid>$elements$date.end
-* data$<stationid>$location
-  * data$<stationid>$location$latitude_dec
-  * data$<stationid>$location$longitude_dec
-  * data$<stationid>$location$elev
-  * data$<stationid>$location$country
-  * data$<stationid>$location$state  
-  * data$<stationid>$location$county
-  * data$<stationid>$location$utcoffset  
-  * data$<stationid>$location$date.begin
-  * data$<stationid>$location$date.end  
-  
-TODO snapshot of one station's actual output
+
+* data\$stationid (unique identifier) [example: data\$USW00094893]
+* data\$stationid\$namez 
+* data\$stationid\$identifiers (associated MET networks) [example: data\$USW00094893\$identifiers]
+    * data\$stationid\$identifiers\$idType [example: data\$USW00094893\$identifiers\$idType]
+    * data\$stationid\$identifiers\$id 
+    * data\$stationid\$platform (primary MET network)
+* data\$stationid\$elements (environmental variables and start/end dates for monitoring)
+    * data\$stationid\$elements\$element
+    * data\$stationid\$elements\$date.begin
+    * data\$stationid\$elements\$date.end
+* data\$stationid\$location (geographic information)
+    * data\$stationid\$location\$latitude_dec
+    * data\$stationid\$location\$longitude_dec
+    * data\$stationid\$location\$elev
+    * data\$stationid\$location\$country
+    * data\$stationid\$location\$state  
+    * data\$stationid\$location\$county
+    * data\$stationid\$location\$utcoffset  
+    * data\$stationid\$location\$date.begin
+    * data\$stationid\$location\$date.end  
 
 ## Future Directions
 

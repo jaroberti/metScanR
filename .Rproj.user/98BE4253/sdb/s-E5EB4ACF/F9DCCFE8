@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "* data\\$<stationid> (unique identifier) [example: data\\$USW00094893]\n* data\\$<stationid>\\$namez \n* data\\$<stationid>\\$identifiers (associated MET networks) [example: data\\$USW00094893\\$identifiers]\n* data\\$<stationid>\\$identifiers\\$idType [example: data\\$USW00094893\\$identifiers\\$idType]\n* data\\$<stationid>\\$identifiers\\$id\n* data\\$<stationid>\\$platform (primary MET network)\n* data\\$<stationid>\\$elements (environmental variables)\n* data\\$<stationid>\\$elements\\$element\n* data\\$<stationid>\\$elements\\$date.begin\n* data\\$<stationid>\\$elements\\$date.end\n* data\\$<stationid>\\$location\n* data\\$<stationid>\\$location\\$latitude_dec\n* data\\$<stationid>\\$location\\$longitude_dec\n* data\\$<stationid>\\$location\\$elev\n* data\\$<stationid>\\$location\\$country\n* data\\$<stationid>\\$location\\$state  \n* data\\$<stationid>\\$location\\$county\n* data\\$<stationid>\\$location\\$utcoffset  \n* data\\$<stationid>\\$location\\$date.begin\n* data\\$<stationid>\\$location\\$date.end  ",
+    "created" : 1497640492171.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "1442394105",
+    "id" : "F9DCCFE8",
+    "lastKnownWriteTime" : 32651569751457901,
+    "last_content_update" : 1497640501947,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

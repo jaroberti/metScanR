@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "## setup list\nmy <- list(a=c(1:3), b=c(1:5), d=c(1:10))\n\n## I only want a subset of the named list elements\ndata <- c(\"b\", \"d\")\n\n## find the index of the name in the list\nout <- lapply(data, function(x) grep(x,lapply(names(my), \"[\", 1)))\n\n## subset by the index value now\nmy[unlist(out)]\n",
+    "created" : 1497635232037.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "2592443941",
+    "id" : "1E905735",
+    "lastKnownWriteTime" : 13229676095799345,
+    "last_content_update" : 1497635729577,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
