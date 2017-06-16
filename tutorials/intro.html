@@ -150,7 +150,7 @@ $(document).ready(function () {
 <div id="version-updates-from-0.0.1-to-1.0.0" class="section level3">
 <h3>Version Updates: From 0.0.1 to 1.0.0</h3>
 <p>The release of version 1.0.0 has brought not only more MET station data (from 13,000 stations to 107,000) but enhanced functionality. The expansion in MET station data required a total re-working of how data are stored and accessed. The current data set occupies a 600 megabyte binary file; this large file is loaded from a remote GitHub repo into R’s ‘background’ when the package is loaded.</p>
-<p>A 10x increase in data also necessitated a new data structure, nested lists, and functions to access those data. A series of <code>get...</code> functions are now used to quickly pull data from the metScanR_DB object. Storing data as a list rather than a data frame has two key benefits: (1) lists take up less disk space (and random access memory) and (2) lists are processed much more quickly.</p>
+<p>A 10x increase in data also necessitated a new data structure, nested lists, and functions to access those data. A series of <code>get...</code> functions are now used to quickly pull data from the metScanR_DB object. Storing data as a list rather than a data.frame has two key benefits: (1) lists take up less disk space (and random access memory) and (2) lists are processed much more quickly.</p>
 </div>
 </div>
 <div id="core-functions" class="section level2">
@@ -175,32 +175,33 @@ $(document).ready(function () {
 </div>
 <div id="meta-data-structure" class="section level2">
 <h2>Meta-Data Structure</h2>
-<p>An object, metScanR_DB, is imported into the metScanR environment when the library is loaded in R. This metScanR_DB object contains all meta-data for the MET stations captured by this project. All <code>metScanR</code> functions return meta-data in a nested list that follows the same general format.</p>
-<p>If we return an object named “data” from a <code>getVars</code> function call, the data are formatted like so (with a description in parentheses):</p>
+<p>An object, metScanR_DB, is imported into the metScanR environment when the library is loaded in R. This metScanR_DB object contains all meta-data for the MET stations captured by this project. All <code>metScanR</code> functions return meta-data in a <em>nested and named list</em> that follows the same general structure for every station in the database.</p>
+<p>If we return an object named “data” from a <code>getVars</code> function call (e.g. <code>data &lt;- getVars[1]</code>, this gives you the first list element or station of the metScanR_DB), the data are formatted as such (with a description in parentheses):</p>
 <ul>
-<li>data$station_id (unique identifier)</li>
-<li>data<span class="math inline">\(station_id\)</span>namez</li>
-<li>data<span class="math inline">\(station_id\)</span>identifiers (associated MET networks)</li>
-<li>data<span class="math inline">\(station_id\)</span>identifiers$idType</li>
-<li>data<span class="math inline">\(station_id\)</span>identifiers$id</li>
-<li>data<span class="math inline">\(station_id\)</span>platform (primary MET network)</li>
-<li>data<span class="math inline">\(station_id\)</span>elements (environmental variables)</li>
-<li>data<span class="math inline">\(station_id\)</span>elements$element</li>
-<li>data<span class="math inline">\(station_id\)</span>elements$date.begin</li>
-<li>data<span class="math inline">\(station_id\)</span>elements$date.end</li>
-<li>data<span class="math inline">\(station_id\)</span>location</li>
-<li>data<span class="math inline">\(station_id\)</span>location$latitude_dec</li>
-<li>data<span class="math inline">\(station_id\)</span>location$longitude_dec</li>
-<li>data<span class="math inline">\(station_id\)</span>location$elev</li>
-<li>data<span class="math inline">\(station_id\)</span>location$country</li>
-<li>data<span class="math inline">\(station_id\)</span>location$state<br />
+<li>data<span class="math inline">\(&lt;station_id&gt; (unique identifier) [example: data\)</span>USW00094893]</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>namez</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>identifiers (associated MET networks) [example: data<span class="math inline">\(USW00094893\)</span>identifiers]</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>identifiers<span class="math inline">\(idType [example: data\)</span>USW00094893<span class="math inline">\(identifiers\)</span>idType]</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>identifiers$id</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>platform (primary MET network)</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>elements (environmental variables)</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>elements$element</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>elements$date.begin</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>elements$date.end</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location$latitude_dec</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location$longitude_dec</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location$elev</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location$country</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location$state<br />
 </li>
-<li>data<span class="math inline">\(station_id\)</span>location$county</li>
-<li>data<span class="math inline">\(station_id\)</span>location$utcoffset<br />
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location$county</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location$utcoffset<br />
 </li>
-<li>data<span class="math inline">\(station_id\)</span>location$date.begin</li>
-<li>data<span class="math inline">\(station_id\)</span>location$date.end</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location$date.begin</li>
+<li>data<span class="math inline">\(&lt;station_id&gt;\)</span>location$date.end</li>
 </ul>
+<p>TODO snapshot of one station’s actual output</p>
 </div>
 <div id="future-directions" class="section level2">
 <h2>Future Directions</h2>
@@ -226,25 +227,33 @@ $(document).ready(function () {
 </ul>
 <p>In this example we’ll do the following:</p>
 <ul>
-<li>Locate meteorological data of interest</li>
-<li>Navigate metScanR’s nested list structure</li>
+<li>Search for meteorological data
+<ul>
+<li>Find data by location</li>
+<li>Find data by MET network and environmental variable</li>
+</ul></li>
+<li>Navigate metScanR’s nested list structure
+<ul>
+<li>How to pull common values out of all list elements</li>
+<li>How to count number of SCAN stations (<code>length(getNetwork(&quot;SCAN&quot;))</code>)</li>
+</ul></li>
 <li>Explore environmental variables listed in metScanR_DB</li>
-<li>Cool things you can do in metScanR v1.0.0
+<li>Practical Use Cases
 <ul>
 <li>Find Rarely Monitored Variables: <code>getVars()</code> “conductivity”, turbidity, ground water, gauge height</li>
-<li>Map networks or variables: <code>getNetwork</code>, <code>mapsiteFinder(getVars(&quot;conductivity&quot;))</code></li>
-<li>Map global network (GHCND)</li>
+<li>Map networks or variables: <code>getNetwork</code>, <code>mapSiteFinder(getVars(&quot;conductivity&quot;))</code></li>
+<li>Map global network (SCAN)</li>
 <li>Find stations with potentially correlated variables for modeling: “groundwater”, “snow depth”, “soil moisture” &gt; intersect(names(list1), names(list2)) &gt; feed into <code>getStation()</code></li>
 <li>Find the longest time series: <code>getDates(start = &quot;1800&quot;, end = &quot;2015&quot;)</code></li>
 </ul></li>
 <li>Interactively visualize data with Leaflet</li>
 <li>Export the meta-data to a .CSV file</li>
 </ul>
-<div id="section" class="section level2">
-<h2></h2>
 </div>
-<div id="find-met-data" class="section level2">
-<h2>Find MET Data</h2>
+<div id="getting-started-1" class="section level1">
+<h1>Getting Started</h1>
+<div id="search-for-meteorological-met-data" class="section level2">
+<h2>Search for meteorological (MET) data</h2>
 <div id="scenario-1-locate-data-via-latitude-and-longitude" class="section level3">
 <h3>Scenario 1: locate data via latitude and longitude</h3>
 <p>Find station meta-data near a given coordinate, assign the output to object <code>scenario1</code>:</p>
@@ -252,133 +261,442 @@ $(document).ready(function () {
 <li><strong>NOTE</strong>: loading the metScanR library will take longer than normal (20-30 seconds) as it loads the large MET station data set into R</li>
 </ul>
 <pre class="r"><code>library(metScanR)</code></pre>
+<pre><code>## Warning: package 'metScanR' was built under R version 3.3.3</code></pre>
 <pre><code>## Welcome to metScanR! This package takes a few extra seconds to load because it checks for updates to an external database upon startup.  Thank you for your patience.</code></pre>
 <pre class="r"><code>scenario1 &lt;- siteFinder(lat=40.05,lon=-105.27,startDate=&quot;2000-01-05&quot;,radius=45) # returns 40 stations</code></pre>
-<p>We can also specify more narrowly the type of data we want returned, for example only COOP stations that have air temperature:</p>
-<pre class="r"><code>scenario1 &lt;- siteFinder(lat=40.05,lon=-105.27,startDate=&quot;2000-01-05&quot;,radius=45,network=&quot;COOP&quot;,vars=&quot;air temperature&quot;) # returns 15 stations</code></pre>
-<p>The siteFinder function returns a list object with elements described above.</p>
-<p>We can also narrow our search to more specific variables of interest via the ‘fuzzy search’ functionality in the <code>vars</code> parameter:</p>
-<pre class="r"><code>#scenario1 &lt;- siteFinder(lat=40.05,lon=-105.27,startDate=&quot;2000-01-05&quot;,radius=45,network=&quot;COOP&quot;,vars=&quot;1-minute wind speed&quot;) # returns 15 stations</code></pre>
+</div>
+<div id="scenario-2-locate-data-by-location-met-network-and-environmental-variable-of-interest" class="section level3">
+<h3>Scenario 2: locate data by location, MET network, and environmental variable of interest</h3>
+<p>Our search can be narrowed to more specific variables of interest via the <code>vars</code> parameter. There are hundreds of weather/climatological variables included in the metScanR database. Rather than requiring the user to know the exact syntax, case, phrase, or network of variables before they search the database, we have implemented a ‘fuzzy search’ function that interprets a user’s text input for the <code>vars</code> variable. The ‘fuzzy search’ function attempts to match the user’s input against a large set of overlapping keywords for each variable listed in the database.</p>
+<p>In this example we search for any variables associated with air temperature measurements:</p>
+<pre class="r"><code>scenario2 &lt;- siteFinder(lat=40.05,lon=-105.27,startDate=&quot;2000-01-05&quot;,radius=45,network=&quot;COOP&quot;,vars=&quot;air temperature&quot;, includeUnk = TRUE) # returns 15 stations</code></pre>
+<p>Typing the object name <code>cenario2</code> shows the resulting output, where values such as “TMAX”, “TMIN”, and “AVGT” are returned (i.e. variables associated with air temperature measurements). Note that an error message is the resulting output if none of the stations within the search have variables that match the <code>vars</code> argument.</p>
+</div>
+<div id="visualize-metscanr-function-output" class="section level3">
+<h3>Visualize metScanR function output</h3>
+<p>metScanR was designed to support users who want to quickly and interactively locate meteorological data. The output of the <code>siteFinder()</code> and <code>get()</code> functions can therefore be visualized by passing the output data to the <code>mapSiteFinder()</code> function:</p>
+<pre class="r"><code>mapSiteFinder(scenario1)</code></pre>
+<div id="htmlwidget-3c743ea5e345cb661f1d" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3c743ea5e345cb661f1d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"Imagery from <a href=\"http://giscience.uni-hd.de/\">GIScience Research Group @ University of Heidelberg<\/a> &mdash; Map data &copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap<\/a>"}]},{"method":"addCircleMarkers","args":[[40.188,40.22889,40.0338,39.9919,39.9436,39.8958,39.7294,40.37667,40.3692,39.9363,39.7488,40.15889,40.2466,39.6527,40.0361,39.8988,39.8297,40.4256,39.7749,40.31,40.21,40.04,39.92,39.94,40.03,39.9,39.93,40.02,40.27,40.07,40.2,40.03,40.2,39.75,39.75,40.33,39.75,39.9,40.42,40.01,39.65,39.75,39.93,39.93,40.22,40.22,39.95,40.32,40.23,39.87,39.95,40.42,40.34,40.38,39.95,40.18],[-105.5019,-105.51833,-105.2811,-105.2667,-104.8361,-105.3847,-105.0083,-105.48583,-105.2353,-105.3502,-105.1205,-105.07361,-105.1463,-105.203,-105.5461,-105.0133,-105.2352,-105.2103,-105.117,-105.64,-105.57,-105.54,-105.76,-105.59,-105.58,-105.58,-105.73,-105.57,-105.58,-105.52,-105.57,-105.57,-105.6,-105.24,-105.25,-105.58,-105.62,-105.65,-105.23,-105.33,-105.2,-105.25,-105.31,-105.3,-105.26,-105.37,-105.36,-105.22,-105.12,-105.12,-104.77,-105.08,-105.12,-105.15,-105.22,-105.03],4,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":["#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#33A02C","#33A02C","#33A02C","#33A02C","#33A02C","#33A02C","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3"],"weight":1,"opacity":0.5,"fill":true,"fillColor":["#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#1F78B4","#33A02C","#33A02C","#33A02C","#33A02C","#33A02C","#33A02C","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#B2DF8A","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#FB9A99","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3","#A6CEE3"],"fillOpacity":1,"dashArray":null},null,null,["<b> Name: <\/b> ALLENSPARK 2NNW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050183<br>  <b> GHCND ID: <\/b>USC00050183<br> <b> GHCNMLT ID: <\/b>USC00050183<br>  <b> NCDC ID: <\/b>20003839<br>   <b> NWSLI ID: <\/b>ALKC2<br>    <b>Start: <\/b> 1948-08-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2503.9 <br> <br>","<b> Name: <\/b> ALLENSPARK 3NW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050185<br>  <b> GHCND ID: <\/b>USC00050185<br> <b> GHCNMLT ID: <\/b>USC00050185<br>  <b> NCDC ID: <\/b>20003997<br>   <b> NWSLI ID: <\/b>APKC2<br>    <b>Start: <\/b> 1994-01-01 <br> <b> End: <\/b> 2004-07-01 <br> <b> Elevation (m): <\/b> 2590.8 <br> <br>","<b> Name: <\/b> BOULDER 2 <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050843<br>  <b> GHCND ID: <\/b>USC00050843<br>   <b> NCDC ID: <\/b>20003803<br>   <b> NWSLI ID: <\/b>BLDC2<br>    <b>Start: <\/b> 1940-06-18 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1650.5 <br> <br>","<b> Name: <\/b> BOULDER <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050848<br>  <b> GHCND ID: <\/b>USC00050848<br> <b> GHCNMLT ID: <\/b>USC00050848<br>  <b> NCDC ID: <\/b>10100133<br>   <b> NWSLI ID: <\/b>BOUC2<br>    <b>Start: <\/b> 1893-10-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1671.5 <br> <br>","<b> Name: <\/b> BRIGHTON 3 SE <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050950<br>  <b> GHCND ID: <\/b>USC00050950<br> <b> GHCNMLT ID: <\/b>USC00050950<br>  <b> NCDC ID: <\/b>20003800<br>   <b> NWSLI ID: <\/b>BRIC2<br>    <b>Start: <\/b> 1972-10-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1528.9 <br> <br>","<b> Name: <\/b> COAL CREEK CANYON <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>051681<br>  <b> GHCND ID: <\/b>USC00051681<br> <b> GHCNMLT ID: <\/b>USC00051681<br>  <b> NCDC ID: <\/b>20004000<br>   <b> NWSLI ID: <\/b>CCCC2<br>    <b>Start: <\/b> 1984-07-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2728 <br> <br>","<b> Name: <\/b> DENVER WATER DEPT <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>052223<br>  <b> GHCND ID: <\/b>USC00052223<br> <b> GHCNMLT ID: <\/b>USC00052223<br>  <b> NCDC ID: <\/b>30000354<br>   <b> NWSLI ID: <\/b>DVNC2<br>    <b>Start: <\/b> 1997-08-19 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1593.5 <br> <br>","<b> Name: <\/b> ESTES PARK <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>052759<br>  <b> GHCND ID: <\/b>USC00052759<br> <b> GHCNMLT ID: <\/b>USC00052759<br>  <b> NCDC ID: <\/b>20003853<br>   <b> NWSLI ID: <\/b>EPKC2<br>    <b>Start: <\/b> 1876-01-01 <br> <b> End: <\/b> 2000-07-31 <br> <b> Elevation (m): <\/b> 2279.9 <br> <br>","<b> Name: <\/b> FLATIRON RESERVOIR <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>052934<br>  <b> GHCND ID: <\/b>USC00052934<br>   <b> NCDC ID: <\/b>30000148<br>   <b> NWSLI ID: <\/b>FLTC2<br>    <b>Start: <\/b> 1996-08-29 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1677.6 <br> <br>","<b> Name: <\/b> GROSS RESERVOIR <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>053629<br>  <b> GHCND ID: <\/b>USC00053629<br> <b> GHCNMLT ID: <\/b>USC00053629<br>  <b> NCDC ID: <\/b>20003795<br>   <b> NWSLI ID: <\/b>GRRC2<br>    <b>Start: <\/b> 1968-08-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2429.3 <br> <br>","<b> Name: <\/b> LAKEWOOD <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>054762<br>  <b> GHCND ID: <\/b>USC00054762<br> <b> GHCNMLT ID: <\/b>USC00054762<br>  <b> NCDC ID: <\/b>20003769<br>   <b> NWSLI ID: <\/b>LKWC2<br>    <b>Start: <\/b> 1962-07-28 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1719.1 <br> <br>","<b> Name: <\/b> LONGMONT 2 ESE <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055116<br>  <b> GHCND ID: <\/b>USC00055116<br> <b> GHCNMLT ID: <\/b>USC00055116<br>  <b> NCDC ID: <\/b>20003833<br>   <b> NWSLI ID: <\/b>LONC2<br>    <b>Start: <\/b> 1887-10-01 <br> <b> End: <\/b> 2005-01-01 <br> <b> Elevation (m): <\/b> 1508.8 <br> <br>","<b> Name: <\/b> LONGMONT 6 NW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055121<br>  <b> GHCND ID: <\/b>USC00055121<br>   <b> NCDC ID: <\/b>20003845<br>   <b> NWSLI ID: <\/b>LMTC2<br>    <b>Start: <\/b> 1948-01-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1569.7 <br> <br>","<b> Name: <\/b> MORRISON 1 SW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055765<br>  <b> GHCND ID: <\/b>USC00055805<br>   <b> NCDC ID: <\/b>20003742<br>   <b> NWSLI ID: <\/b>MRRC2<br>    <b>Start: <\/b> 1940-07-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1780 <br> <br>","<b> Name: <\/b> NEDERLAND 5 NNW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055881<br>  <b> GHCND ID: <\/b>USC00055881<br>   <b> NCDC ID: <\/b>30000129<br>   <b> NWSLI ID: <\/b>NEDC2<br>    <b>Start: <\/b> 1996-09-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3051 <br> <br>","<b> Name: <\/b> NORTHGLENN <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055984<br>  <b> GHCND ID: <\/b>USC00055984<br> <b> GHCNMLT ID: <\/b>USC00055984<br>  <b> NCDC ID: <\/b>20003934<br>   <b> NWSLI ID: <\/b>NRTC2<br>    <b>Start: <\/b> 1984-07-18 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1648.1 <br> <br>","<b> Name: <\/b> RALSTON RESERVOIR <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>056816<br>  <b> GHCND ID: <\/b>USC00056816<br> <b> GHCNMLT ID: <\/b>USC00056816<br>  <b> NCDC ID: <\/b>20003778<br>   <b> NWSLI ID: <\/b>GDNC2<br>    <b>Start: <\/b> 1968-08-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1798.3 <br> <br>","<b> Name: <\/b> WATERDALE <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>058839<br>  <b> GHCND ID: <\/b>USC00058839<br> <b> GHCNMLT ID: <\/b>USC00058839<br>  <b> NCDC ID: <\/b>20003863<br>   <b> NWSLI ID: <\/b>WTRC2<br>    <b>Start: <\/b> 1895-01-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1594.1 <br> <br>","<b> Name: <\/b> WHEAT RIDGE 2 <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>058995<br>  <b> GHCND ID: <\/b>USC00058995<br> <b> GHCNMLT ID: <\/b>USC00058995<br>  <b> NCDC ID: <\/b>20003768<br>   <b> NWSLI ID: <\/b>WGEC2<br>    <b>Start: <\/b> 1981-02-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1645.3 <br> <br>","<b> Name: <\/b> Bear Lake <br> <b> Platform: <\/b> SNTL <br>        <b> NRCS ID: <\/b>SNTL:322<br>     <b>Start: <\/b> 1980-07 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2895.6 <br> <br>","<b> Name: <\/b> Copeland Lake <br> <b> Platform: <\/b> SNTL <br>        <b> NRCS ID: <\/b>SNTL:412<br>     <b>Start: <\/b> 1980-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2621.28 <br> <br>","<b> Name: <\/b> Niwot <br> <b> Platform: <\/b> SNTL <br>        <b> NRCS ID: <\/b>SNTL:663<br>     <b>Start: <\/b> 1980-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3020.568 <br> <br>","<b> Name: <\/b> Arrow <br> <b> Platform: <\/b> SNTL <br>        <b> NRCS ID: <\/b>SNTL:305<br>     <b>Start: <\/b> 1978-10 <br> <b> End: <\/b> 2013-10 <br> <b> Elevation (m): <\/b> 2950.464 <br> <br>","<b> Name: <\/b> Lake Eldora <br> <b> Platform: <\/b> SNTL <br>        <b> NRCS ID: <\/b>SNTL:564<br>     <b>Start: <\/b> 1978-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2956.56 <br> <br>","<b> Name: <\/b> University Camp <br> <b> Platform: <\/b> SNTL <br>        <b> NRCS ID: <\/b>SNTL:838<br>     <b>Start: <\/b> 1978-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3139.44 <br> <br>","<b> Name: <\/b> Baltimore <br> <b> Platform: <\/b> SNOW <br>        <b> NRCS ID: <\/b>SNOW:05K23<br>     <b>Start: <\/b> 1961-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2682.24 <br> <br>","<b> Name: <\/b> Ranch Creek <br> <b> Platform: <\/b> SNOW <br>        <b> NRCS ID: <\/b>SNOW:05K18<br>     <b>Start: <\/b> 1957-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2865.12 <br> <br>","<b> Name: <\/b> Boulder Falls <br> <b> Platform: <\/b> SNOW <br>        <b> NRCS ID: <\/b>SNOW:05J25<br>     <b>Start: <\/b> 1952-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3048 <br> <br>","<b> Name: <\/b> Longs Peak <br> <b> Platform: <\/b> SNOW <br>        <b> NRCS ID: <\/b>SNOW:05J22<br>     <b>Start: <\/b> 1951-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3200.4 <br> <br>","<b> Name: <\/b> Ward <br> <b> Platform: <\/b> SNOW <br>        <b> NRCS ID: <\/b>SNOW:05J21<br>     <b>Start: <\/b> 1950-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2895.6 <br> <br>","<b> Name: <\/b> Copeland Lake <br> <b> Platform: <\/b> SNOW <br>        <b> NRCS ID: <\/b>SNOW:05J18<br>     <b>Start: <\/b> 1949-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2621.28 <br> <br>","<b> Name: <\/b> University Camp <br> <b> Platform: <\/b> SNOW <br>        <b> NRCS ID: <\/b>SNOW:05J08<br>     <b>Start: <\/b> 1938-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3139.44 <br> <br>","<b> Name: <\/b> Wild Basin <br> <b> Platform: <\/b> SNOW <br>        <b> NRCS ID: <\/b>SNOW:05J05<br>     <b>Start: <\/b> 1936-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2926.08 <br> <br>","<b> Name: <\/b> Clear Ck at Golden <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:06719505<br>     <b>Start: <\/b> 1957-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1735.836 <br> <br>","<b> Name: <\/b> Church Ditch <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:200540<br>     <b>Start: <\/b> 1952-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1737.36 <br> <br>","<b> Name: <\/b> Alva B. Adams Tunnel at East Portal <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:09013000<br>     <b>Start: <\/b> 1946-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2499.055 <br> <br>","<b> Name: <\/b> Clear Ck nr Lawson <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:06716500<br>     <b>Start: <\/b> 1946-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2462.784 <br> <br>","<b> Name: <\/b> Moffat Water Tunnel at East Portal <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:09022500<br>     <b>Start: <\/b> 1936-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2871.826 <br> <br>","<b> Name: <\/b> Big Thompson R at Canyon Mouth <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:06738000<br>     <b>Start: <\/b> 1927-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1616.964 <br> <br>","<b> Name: <\/b> Boulder Ck nr Orodell <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:06727000<br>     <b>Start: <\/b> 1906-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1775.765 <br> <br>","<b> Name: <\/b> Bear Ck at Morrison <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:06710500<br>     <b>Start: <\/b> 1900-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1761.744 <br> <br>","<b> Name: <\/b> Golden City Ditch <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:700542<br>     <b>Start: <\/b> 1900-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1737.36 <br> <br>","<b> Name: <\/b> South Boulder Ck Div <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:BOSDELCO<br>     <b>Start: <\/b> 1900-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1926.336 <br> <br>","<b> Name: <\/b> South Boulder Ck nr Eldorado Springs <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:06729500<br>     <b>Start: <\/b> 1896-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1853.184 <br> <br>","<b> Name: <\/b> St. Vrain Ck at Lyons <br> <b> Platform: <\/b> USGS <br>        <b> NRCS ID: <\/b>USGS:06724000<br>     <b>Start: <\/b> 1895-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1613.002 <br> <br>","<b> Name: <\/b> Ralph Price Reservoir <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016260<br>     <b>Start: <\/b> 1969-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1956.816 <br> <br>","<b> Name: <\/b> Gross Reservoir <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016130<br>     <b>Start: <\/b> 1955-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2209.8 <br> <br>","<b> Name: <\/b> Carter Lake <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016060<br>     <b>Start: <\/b> 1954-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1761.744 <br> <br>","<b> Name: <\/b> Terry Reservoir <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016290<br>     <b>Start: <\/b> 1952-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1554.48 <br> <br>","<b> Name: <\/b> Standley Reservoir <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016280<br>     <b>Start: <\/b> 1950-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1676.4 <br> <br>","<b> Name: <\/b> Barr Lake <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016020<br>     <b>Start: <\/b> 1949-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1569.72 <br> <br>","<b> Name: <\/b> Lake Loveland Reservoir <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016180<br>     <b>Start: <\/b> 1949-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1530.096 <br> <br>","<b> Name: <\/b> Lone Tree Reservoir <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016190<br>     <b>Start: <\/b> 1949-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1569.72 <br> <br>","<b> Name: <\/b> Mariano Reservoir <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016200<br>     <b>Start: <\/b> 1949-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1539.24 <br> <br>","<b> Name: <\/b> Marshall Reservoir <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016220<br>     <b>Start: <\/b> 1949-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1725.168 <br> <br>","<b> Name: <\/b> Union Reservoir <br> <b> Platform: <\/b> BOR <br>        <b> NRCS ID: <\/b>BOR:06016300<br>     <b>Start: <\/b> 1949-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1508.76 <br> <br>"],null,null,null,null]},{"method":"addLegend","args":[{"colors":["#A6CEE3","#1F78B4","#B2DF8A","#33A02C","#FB9A99"],"labels":["BOR","COOP","SNOW","SNTL","USGS"],"na_color":null,"na_label":"NA","opacity":1,"position":"bottomleft","type":"unknown","title":"Nearby Sites","extra":null,"layerId":null,"className":"info legend"}]}],"limits":{"lat":[39.65,40.4256],"lng":[-105.76,-104.77]}},"evals":[],"jsHooks":[]}</script>
+<p>The <code>mapSiteFinder()</code> function produces an interactive Leaflet map with every MET station represented by a colored circle. Colors denote which network a particular station belongs to. Users can click on circles to view key station meta-data such as name, platform, unique identifier, monitoring start date, monitoring end date, and station elevation. Users can also pan, zoom, and click on stations to better visualize the spatial arrangement of stations and/or networks.</p>
+<p><code>mapSiteFinder(scenario1)</code> returns 56 stations across 5 networks. Attempting to find, download, and organize data from this many stations and networks can be a time consuming task. One strategy for reducing the complexity of this task is to ‘eyeball’ which MET networks have the most extensive spatial coverage or time series (i.e. broadest monitoring start and end dates).</p>
+<p>A brief glance at the map shows that the “COOP” network fits our criteria:</p>
+<pre class="r"><code>scenario3 &lt;- siteFinder(lat=40.05,lon=-105.27,startDate=&quot;2000-01-05&quot;,radius=45,network=&quot;COOP&quot;)
+mapSiteFinder(scenario3)</code></pre>
+<div id="htmlwidget-fe48f270a531436bc981" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fe48f270a531436bc981">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"Imagery from <a href=\"http://giscience.uni-hd.de/\">GIScience Research Group @ University of Heidelberg<\/a> &mdash; Map data &copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap<\/a>"}]},{"method":"addCircleMarkers","args":[[40.188,40.22889,40.0338,39.9919,39.9436,39.8958,39.7294,40.37667,40.3692,39.9363,39.7488,40.15889,40.2466,39.6527,40.0361,39.8988,39.8297,40.4256,39.7749],[-105.5019,-105.51833,-105.2811,-105.2667,-104.8361,-105.3847,-105.0083,-105.48583,-105.2353,-105.3502,-105.1205,-105.07361,-105.1463,-105.203,-105.5461,-105.0133,-105.2352,-105.2103,-105.117],4,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":["blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue"],"weight":1,"opacity":0.5,"fill":true,"fillColor":["blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue"],"fillOpacity":1,"dashArray":null},null,null,["<b> Name: <\/b> ALLENSPARK 2NNW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050183<br>  <b> GHCND ID: <\/b>USC00050183<br> <b> GHCNMLT ID: <\/b>USC00050183<br>  <b> NCDC ID: <\/b>20003839<br>   <b> NWSLI ID: <\/b>ALKC2<br>    <b>Start: <\/b> 1948-08-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2503.9 <br> <br>","<b> Name: <\/b> ALLENSPARK 3NW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050185<br>  <b> GHCND ID: <\/b>USC00050185<br> <b> GHCNMLT ID: <\/b>USC00050185<br>  <b> NCDC ID: <\/b>20003997<br>   <b> NWSLI ID: <\/b>APKC2<br>    <b>Start: <\/b> 1994-01-01 <br> <b> End: <\/b> 2004-07-01 <br> <b> Elevation (m): <\/b> 2590.8 <br> <br>","<b> Name: <\/b> BOULDER 2 <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050843<br>  <b> GHCND ID: <\/b>USC00050843<br>   <b> NCDC ID: <\/b>20003803<br>   <b> NWSLI ID: <\/b>BLDC2<br>    <b>Start: <\/b> 1940-06-18 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1650.5 <br> <br>","<b> Name: <\/b> BOULDER <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050848<br>  <b> GHCND ID: <\/b>USC00050848<br> <b> GHCNMLT ID: <\/b>USC00050848<br>  <b> NCDC ID: <\/b>10100133<br>   <b> NWSLI ID: <\/b>BOUC2<br>    <b>Start: <\/b> 1893-10-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1671.5 <br> <br>","<b> Name: <\/b> BRIGHTON 3 SE <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050950<br>  <b> GHCND ID: <\/b>USC00050950<br> <b> GHCNMLT ID: <\/b>USC00050950<br>  <b> NCDC ID: <\/b>20003800<br>   <b> NWSLI ID: <\/b>BRIC2<br>    <b>Start: <\/b> 1972-10-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1528.9 <br> <br>","<b> Name: <\/b> COAL CREEK CANYON <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>051681<br>  <b> GHCND ID: <\/b>USC00051681<br> <b> GHCNMLT ID: <\/b>USC00051681<br>  <b> NCDC ID: <\/b>20004000<br>   <b> NWSLI ID: <\/b>CCCC2<br>    <b>Start: <\/b> 1984-07-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2728 <br> <br>","<b> Name: <\/b> DENVER WATER DEPT <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>052223<br>  <b> GHCND ID: <\/b>USC00052223<br> <b> GHCNMLT ID: <\/b>USC00052223<br>  <b> NCDC ID: <\/b>30000354<br>   <b> NWSLI ID: <\/b>DVNC2<br>    <b>Start: <\/b> 1997-08-19 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1593.5 <br> <br>","<b> Name: <\/b> ESTES PARK <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>052759<br>  <b> GHCND ID: <\/b>USC00052759<br> <b> GHCNMLT ID: <\/b>USC00052759<br>  <b> NCDC ID: <\/b>20003853<br>   <b> NWSLI ID: <\/b>EPKC2<br>    <b>Start: <\/b> 1876-01-01 <br> <b> End: <\/b> 2000-07-31 <br> <b> Elevation (m): <\/b> 2279.9 <br> <br>","<b> Name: <\/b> FLATIRON RESERVOIR <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>052934<br>  <b> GHCND ID: <\/b>USC00052934<br>   <b> NCDC ID: <\/b>30000148<br>   <b> NWSLI ID: <\/b>FLTC2<br>    <b>Start: <\/b> 1996-08-29 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1677.6 <br> <br>","<b> Name: <\/b> GROSS RESERVOIR <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>053629<br>  <b> GHCND ID: <\/b>USC00053629<br> <b> GHCNMLT ID: <\/b>USC00053629<br>  <b> NCDC ID: <\/b>20003795<br>   <b> NWSLI ID: <\/b>GRRC2<br>    <b>Start: <\/b> 1968-08-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2429.3 <br> <br>","<b> Name: <\/b> LAKEWOOD <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>054762<br>  <b> GHCND ID: <\/b>USC00054762<br> <b> GHCNMLT ID: <\/b>USC00054762<br>  <b> NCDC ID: <\/b>20003769<br>   <b> NWSLI ID: <\/b>LKWC2<br>    <b>Start: <\/b> 1962-07-28 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1719.1 <br> <br>","<b> Name: <\/b> LONGMONT 2 ESE <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055116<br>  <b> GHCND ID: <\/b>USC00055116<br> <b> GHCNMLT ID: <\/b>USC00055116<br>  <b> NCDC ID: <\/b>20003833<br>   <b> NWSLI ID: <\/b>LONC2<br>    <b>Start: <\/b> 1887-10-01 <br> <b> End: <\/b> 2005-01-01 <br> <b> Elevation (m): <\/b> 1508.8 <br> <br>","<b> Name: <\/b> LONGMONT 6 NW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055121<br>  <b> GHCND ID: <\/b>USC00055121<br>   <b> NCDC ID: <\/b>20003845<br>   <b> NWSLI ID: <\/b>LMTC2<br>    <b>Start: <\/b> 1948-01-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1569.7 <br> <br>","<b> Name: <\/b> MORRISON 1 SW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055765<br>  <b> GHCND ID: <\/b>USC00055805<br>   <b> NCDC ID: <\/b>20003742<br>   <b> NWSLI ID: <\/b>MRRC2<br>    <b>Start: <\/b> 1940-07-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1780 <br> <br>","<b> Name: <\/b> NEDERLAND 5 NNW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055881<br>  <b> GHCND ID: <\/b>USC00055881<br>   <b> NCDC ID: <\/b>30000129<br>   <b> NWSLI ID: <\/b>NEDC2<br>    <b>Start: <\/b> 1996-09-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3051 <br> <br>","<b> Name: <\/b> NORTHGLENN <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055984<br>  <b> GHCND ID: <\/b>USC00055984<br> <b> GHCNMLT ID: <\/b>USC00055984<br>  <b> NCDC ID: <\/b>20003934<br>   <b> NWSLI ID: <\/b>NRTC2<br>    <b>Start: <\/b> 1984-07-18 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1648.1 <br> <br>","<b> Name: <\/b> RALSTON RESERVOIR <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>056816<br>  <b> GHCND ID: <\/b>USC00056816<br> <b> GHCNMLT ID: <\/b>USC00056816<br>  <b> NCDC ID: <\/b>20003778<br>   <b> NWSLI ID: <\/b>GDNC2<br>    <b>Start: <\/b> 1968-08-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1798.3 <br> <br>","<b> Name: <\/b> WATERDALE <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>058839<br>  <b> GHCND ID: <\/b>USC00058839<br> <b> GHCNMLT ID: <\/b>USC00058839<br>  <b> NCDC ID: <\/b>20003863<br>   <b> NWSLI ID: <\/b>WTRC2<br>    <b>Start: <\/b> 1895-01-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1594.1 <br> <br>","<b> Name: <\/b> WHEAT RIDGE 2 <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>058995<br>  <b> GHCND ID: <\/b>USC00058995<br> <b> GHCNMLT ID: <\/b>USC00058995<br>  <b> NCDC ID: <\/b>20003768<br>   <b> NWSLI ID: <\/b>WGEC2<br>    <b>Start: <\/b> 1981-02-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1645.3 <br> <br>"],null,null,null,null]},{"method":"addLegend","args":[{"colors":["blue"],"labels":["COOP"],"na_color":null,"na_label":"NA","opacity":1,"position":"bottomleft","type":"unknown","title":"Nearby Sites","extra":null,"layerId":null,"className":"info legend"}]}],"limits":{"lat":[39.6527,40.4256],"lng":[-105.5461,-104.8361]}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>## count the number of stations
+length(names(scenario3)) </code></pre>
+<pre><code>## [1] 19</code></pre>
+<p>Here we see that the data set has been reduced to 19 stations from the same network, thus simplifying our original task.</p>
 </div>
 </div>
-<div id="navigate-metscanrs-nested-list-structure" class="section level2">
-<h2>Navigate metScanR’s nested list structure</h2>
-<pre class="r"><code>## quickly extract data from the metScanR DB outputs
-sf_getter &lt;- function(input, first, second=NULL){
-  if (is.null(second)){
-    lapply(input, &quot;[[&quot;, first)
-  } else {
-    lapply(lapply(input, &quot;[[&quot;, first), &quot;[[&quot;, second)
-  }
-}
-
-# extract data from all stations returned
-sf_getter(scenario1, &quot;identifiers&quot;, &quot;idType&quot;)</code></pre>
-<pre><code>## $USC00050183
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00050185
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00050848
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00050950
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00051681
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00052223
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00052759
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00053629
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00054762
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00055116
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00055881
-## [1] &quot;GHCND&quot;     &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00055984
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00056816
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00058839
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
-## 
-## $USC00058995
-## [1] &quot;GHCND&quot;     &quot;GHCNMLT&quot;   &quot;COOP&quot;      &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;</code></pre>
-<pre class="r"><code># collapse into a data frame -- this only works for list elements that have the same dimensions
-plyr::ldply(sf_getter(scenario1, &quot;platform&quot;))</code></pre>
-<pre><code>##            .id   V1
-## 1  USC00050183 COOP
-## 2  USC00050185 COOP
-## 3  USC00050848 COOP
-## 4  USC00050950 COOP
-## 5  USC00051681 COOP
-## 6  USC00052223 COOP
-## 7  USC00052759 COOP
-## 8  USC00053629 COOP
-## 9  USC00054762 COOP
-## 10 USC00055116 COOP
-## 11 USC00055881 COOP
-## 12 USC00055984 COOP
-## 13 USC00056816 COOP
-## 14 USC00058839 COOP
-## 15 USC00058995 COOP</code></pre>
 </div>
+<div id="exploring-metscanr-functionality" class="section level1">
+<h1>Exploring metScanR functionality</h1>
+<p>The next section walks you through how to browse through the many environmental variables logged by metScanR.</p>
 <div id="explore-environmental-variables-listed-in-metscanr_db" class="section level2">
 <h2>Explore environmental variables listed in metScanR_DB</h2>
 <p>There are 830 different environmental variables listed in the metScanR_DB. You can search through the list of terms associated with any station by combining two functions in RStudio, <code>View()</code> and plyr’s <code>ldply</code>, to neatly display, and then search through, the data:</p>
 <pre class="r"><code>View(plyr::ldply(metScanR:::metScanR_terms))</code></pre>
 <p>In the search bar, typing in a term like “temperature” will narrow the number of rows displayed.</p>
 </div>
-<div id="cool-stuff" class="section level2">
-<h2>Cool Stuff</h2>
-<pre class="r"><code>library(jsonlite)</code></pre>
-<pre><code>## Warning: package 'jsonlite' was built under R version 3.3.3</code></pre>
-<pre class="r"><code>library(httr)
-library(plyr)
-library(metScanR)
-
-########################################################################################
-############################################ Get Single ACIS Station Function
-########################################################################################
-## check if any of these ID columns in the input is not null
-## date format= &quot;YYYY-MM-DD&quot;
-get_single_acis &lt;- function(sid, start_date,end_date,vars=&quot;mint,maxt,avgt,pcpn,snow,snwd,obst&quot;){
-  # pull station meta-data!
-  #vars &lt;- &quot;mint,maxt,avgt,pcpn,snow,snwd,obst&quot;
-  params &lt;- list(sid = sid, elems = vars, sdate = start_date, edate = end_date, output = &quot;json&quot;)
-  #req &lt;- httr::POST(url = &quot;http://data.rcc-acis.org/MultiStnData&quot;, body = params, encode='json')  
-  req &lt;- httr::POST(url = &quot;http://data.rcc-acis.org/StnData&quot;, body = params, encode='json')
-  dat &lt;- jsonlite::fromJSON(content(req, &quot;text&quot;)) ## much better than parsing a csv
-  out &lt;- as.data.frame(dat$data)
-  proceed &lt;- ncol(out)
-  ## if for some reason there are no data -- keep going
-  if (proceed == 0){
-    return(&quot;NO DATA&quot;)
+<div id="navigate-metscanrs-nested-list-meta-data-structure" class="section level2">
+<h2>Navigate metScanR’s nested list meta-data structure</h2>
+<p>Most R users, and data users in general, are familiar with tabular or table formatted data where information is organized in rows and columns. Because of the large volume of data contained within the metScanR database, it is necessary for the data to be stored and transferred as an R list object. The following example describes a method for manipulating metScanR’s list output to quickly organize and summarize the information returned.</p>
+<p>Here we define a simple function that quickly extracts data values nested one “element” or two “sub-elements” within the metScanR output object.</p>
+<pre class="r"><code>## quickly extract data from the metScanR DB outputs
+ls_getter &lt;- function(input, first, second=NULL){
+  if (is.null(second)){
+    lapply(input, &quot;[[&quot;, first)
   } else {
-    names(out) &lt;- c(&quot;date&quot;, strsplit(vars, &quot;,&quot;)[[1]])
-    print(sid)
-    out$sid &lt;- sid
-    out$state #dat$meta$statedat$meta$state
-    return(out)
+    lapply(lapply(input, &quot;[[&quot;, first), &quot;[[&quot;, second)
   }
-}
-
-old &lt;- getDates(startDate = &quot;1800-01-01&quot;, endDate=&quot;2015-01-01&quot;)
-old$USC00226177</code></pre>
+}</code></pre>
+<p>With this function, and the data returned from <code>scenario1</code> above, we can begin to answer the question “What environmental variables are measured at the stations within my search radius?”:</p>
+<pre class="r"><code># extract data from all stations returned
+ls_getter(scenario1, &quot;elements&quot;, &quot;element&quot;)</code></pre>
+<pre><code>## $USC00050183
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;DASF&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;  
+##  [8] &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;  
+## [15] &quot;WT04&quot;   &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT07&quot;   &quot;WT09&quot;   &quot;WT11&quot;   &quot;WT14&quot;  
+## 
+## $USC00050185
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;DASF&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;  
+##  [8] &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;  
+## [15] &quot;WT05&quot;  
+## 
+## $USC00050843
+## [1] &quot;PRECIP&quot; &quot;DAPR&quot;   &quot;MDPR&quot;   &quot;PRCP&quot;  
+## 
+## $USC00050848
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;DASF&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;  
+##  [8] &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;  
+## [15] &quot;WT04&quot;   &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT07&quot;   &quot;WT08&quot;   &quot;WT09&quot;   &quot;WT11&quot;  
+## [22] &quot;WT14&quot;   &quot;WT16&quot;   &quot;WT18&quot;  
+## 
+## $USC00050950
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;DASF&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;  
+##  [8] &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;  
+## [15] &quot;WT04&quot;   &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT11&quot;  
+## 
+## $USC00051681
+##  [1] &quot;PRECIP&quot;     &quot;SNOWDPTH&quot;   &quot;SNOWFALL&quot;   &quot;SNOWFALLEQ&quot; &quot;SNOWWTREQ&quot; 
+##  [6] &quot;TEMP&quot;       &quot;PRCP&quot;       &quot;SNOW&quot;       &quot;SNWD&quot;       &quot;TMAX&quot;      
+## [11] &quot;TMIN&quot;       &quot;TOBS&quot;       &quot;WT01&quot;       &quot;WT03&quot;       &quot;WT04&quot;      
+## [16] &quot;WT05&quot;       &quot;WT06&quot;       &quot;WT11&quot;      
+## 
+## $USC00052223
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;   &quot;SNOW&quot;  
+##  [8] &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;   &quot;WT04&quot;  
+## [15] &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT11&quot;  
+## 
+## $USC00052759
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAEV&quot;   &quot;DASF&quot;   &quot;DAWM&quot;   &quot;EVAP&quot;   &quot;MDEV&quot;  
+##  [8] &quot;MDSF&quot;   &quot;MDWM&quot;   &quot;MNPN&quot;   &quot;MXPN&quot;   &quot;PRCP&quot;   &quot;SNOW&quot;   &quot;SNWD&quot;  
+## [15] &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WDMV&quot;   &quot;WT01&quot;   &quot;WT03&quot;   &quot;WT05&quot;  
+## [22] &quot;WT06&quot;   &quot;WT11&quot;   &quot;WT14&quot;   &quot;WT16&quot;   &quot;WT18&quot;  
+## 
+## $USC00052934
+##  [1] &quot;PRECIP&quot; &quot;DAPR&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;   &quot;SNOW&quot;   &quot;SNWD&quot;  
+##  [8] &quot;WT01&quot;   &quot;WT03&quot;   &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT11&quot;  
+## 
+## $USC00053629
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;   &quot;SNOW&quot;  
+##  [8] &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;   &quot;WT04&quot;  
+## [15] &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT11&quot;  
+## 
+## $USC00054762
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;DASF&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;  
+##  [8] &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;  
+## [15] &quot;WT04&quot;   &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT11&quot;   &quot;WT14&quot;  
+## 
+## $USC00055116
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;DASF&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;  
+##  [8] &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;  
+## [15] &quot;WT04&quot;   &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT07&quot;   &quot;WT08&quot;   &quot;WT09&quot;   &quot;WT11&quot;  
+## [22] &quot;WT14&quot;   &quot;WT18&quot;  
+## 
+## $USC00055121
+## [1] &quot;PRECIP&quot; &quot;DAPR&quot;   &quot;MDPR&quot;   &quot;PRCP&quot;  
+## 
+## $USC00055805
+##  [1] &quot;PRECIP&quot; &quot;DAPR&quot;   &quot;MDPR&quot;   &quot;PRCP&quot;   &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;WT01&quot;  
+##  [8] &quot;WT04&quot;   &quot;WT05&quot;   &quot;WT11&quot;   &quot;WT16&quot;   &quot;WT18&quot;  
+## 
+## $USC00055881
+## [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;  
+## 
+## $USC00055984
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;DASF&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;  
+##  [8] &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;  
+## [15] &quot;WT04&quot;   &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT11&quot;  
+## 
+## $USC00056816
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;MDPR&quot;   &quot;PRCP&quot;   &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;  
+##  [8] &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;   &quot;WT04&quot;   &quot;WT05&quot;   &quot;WT06&quot;  
+## [15] &quot;WT11&quot;  
+## 
+## $USC00058839
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;DAPR&quot;   &quot;DASF&quot;   &quot;MDPR&quot;   &quot;MDSF&quot;   &quot;PRCP&quot;  
+##  [8] &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;   &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WT01&quot;   &quot;WT03&quot;  
+## [15] &quot;WT04&quot;   &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT07&quot;   &quot;WT08&quot;   &quot;WT09&quot;   &quot;WT11&quot;  
+## [22] &quot;WT14&quot;   &quot;WT16&quot;   &quot;WT18&quot;  
+## 
+## $USC00058995
+##  [1] &quot;PRECIP&quot; &quot;TEMP&quot;   &quot;AWND&quot;   &quot;PRCP&quot;   &quot;SNOW&quot;   &quot;SNWD&quot;   &quot;TMAX&quot;  
+##  [8] &quot;TMIN&quot;   &quot;TOBS&quot;   &quot;WDFG&quot;   &quot;WSFG&quot;   &quot;WT01&quot;   &quot;WT03&quot;   &quot;WT04&quot;  
+## [15] &quot;WT05&quot;   &quot;WT06&quot;   &quot;WT11&quot;  
+## 
+## $`SNTL:322`
+## [1] &quot;air temperature&quot;            &quot;precipitation accumulation&quot;
+## [3] &quot;snow depth&quot;                 &quot;snow water equivalent&quot;     
+## 
+## $`SNTL:412`
+## [1] &quot;air temperature&quot;            &quot;precipitation accumulation&quot;
+## [3] &quot;snow depth&quot;                 &quot;snow water equivalent&quot;     
+## 
+## $`SNTL:663`
+## [1] &quot;air temperature&quot;            &quot;precipitation accumulation&quot;
+## [3] &quot;snow depth&quot;                 &quot;snow water equivalent&quot;     
+## 
+## $`SNTL:305`
+## [1] &quot;air temperature&quot;            &quot;precipitation accumulation&quot;
+## [3] &quot;snow depth&quot;                 &quot;snow water equivalent&quot;     
+## [5] &quot;soil moisture percent&quot;      &quot;soil temperature&quot;          
+## [7] &quot;wind speed&quot;                
+## 
+## $`SNTL:564`
+## [1] &quot;air temperature&quot;            &quot;precipitation accumulation&quot;
+## [3] &quot;snow depth&quot;                 &quot;snow water equivalent&quot;     
+## 
+## $`SNTL:838`
+## [1] &quot;air temperature&quot;            &quot;precipitation accumulation&quot;
+## [3] &quot;snow depth&quot;                 &quot;snow water equivalent&quot;     
+## 
+## $`SNOW:05K23`
+## NULL
+## 
+## $`SNOW:05K18`
+## NULL
+## 
+## $`SNOW:05J25`
+## NULL
+## 
+## $`SNOW:05J22`
+## NULL
+## 
+## $`SNOW:05J21`
+## NULL
+## 
+## $`SNOW:05J18`
+## NULL
+## 
+## $`SNOW:05J08`
+## NULL
+## 
+## $`SNOW:05J05`
+## NULL
+## 
+## $`USGS:06719505`
+## NULL
+## 
+## $`USGS:200540`
+## NULL
+## 
+## $`USGS:09013000`
+## NULL
+## 
+## $`USGS:06716500`
+## NULL
+## 
+## $`USGS:09022500`
+## NULL
+## 
+## $`USGS:06738000`
+## NULL
+## 
+## $`USGS:06727000`
+## NULL
+## 
+## $`USGS:06710500`
+## NULL
+## 
+## $`USGS:700542`
+## NULL
+## 
+## $`USGS:BOSDELCO`
+## NULL
+## 
+## $`USGS:06729500`
+## NULL
+## 
+## $`USGS:06724000`
+## NULL
+## 
+## $`BOR:06016260`
+## NULL
+## 
+## $`BOR:06016130`
+## NULL
+## 
+## $`BOR:06016060`
+## NULL
+## 
+## $`BOR:06016290`
+## NULL
+## 
+## $`BOR:06016280`
+## NULL
+## 
+## $`BOR:06016020`
+## NULL
+## 
+## $`BOR:06016180`
+## NULL
+## 
+## $`BOR:06016190`
+## NULL
+## 
+## $`BOR:06016200`
+## NULL
+## 
+## $`BOR:06016220`
+## NULL
+## 
+## $`BOR:06016300`
+## NULL</code></pre>
+<p>Since every list element within the metScanR_DB has the same dimensions and data type, we can quickly coerce this ‘slice’ of the list (where the ‘slice’ is the list member and sub-member <code>elements$element</code>) into a vector by using base R functions <code>c</code>, <code>unique</code>, and <code>do.call</code>:</p>
+<pre class="r"><code>## base R alternative -- outputs repeat
+unique(do.call(c, ls_getter(scenario1, &quot;elements&quot;, &quot;element&quot;)))</code></pre>
+<pre><code>##  [1] &quot;PRECIP&quot;                     &quot;TEMP&quot;                      
+##  [3] &quot;DAPR&quot;                       &quot;DASF&quot;                      
+##  [5] &quot;MDPR&quot;                       &quot;MDSF&quot;                      
+##  [7] &quot;PRCP&quot;                       &quot;SNOW&quot;                      
+##  [9] &quot;SNWD&quot;                       &quot;TMAX&quot;                      
+## [11] &quot;TMIN&quot;                       &quot;TOBS&quot;                      
+## [13] &quot;WT01&quot;                       &quot;WT03&quot;                      
+## [15] &quot;WT04&quot;                       &quot;WT05&quot;                      
+## [17] &quot;WT06&quot;                       &quot;WT07&quot;                      
+## [19] &quot;WT09&quot;                       &quot;WT11&quot;                      
+## [21] &quot;WT14&quot;                       &quot;WT08&quot;                      
+## [23] &quot;WT16&quot;                       &quot;WT18&quot;                      
+## [25] &quot;SNOWDPTH&quot;                   &quot;SNOWFALL&quot;                  
+## [27] &quot;SNOWFALLEQ&quot;                 &quot;SNOWWTREQ&quot;                 
+## [29] &quot;DAEV&quot;                       &quot;DAWM&quot;                      
+## [31] &quot;EVAP&quot;                       &quot;MDEV&quot;                      
+## [33] &quot;MDWM&quot;                       &quot;MNPN&quot;                      
+## [35] &quot;MXPN&quot;                       &quot;WDMV&quot;                      
+## [37] &quot;AWND&quot;                       &quot;WDFG&quot;                      
+## [39] &quot;WSFG&quot;                       &quot;air temperature&quot;           
+## [41] &quot;precipitation accumulation&quot; &quot;snow depth&quot;                
+## [43] &quot;snow water equivalent&quot;      &quot;soil moisture percent&quot;     
+## [45] &quot;soil temperature&quot;           &quot;wind speed&quot;</code></pre>
+<p>We can also coerce the list output into a data.frame using <code>rbind</code> and <code>do.call</code>:</p>
+<pre class="r"><code>do.call(rbind, ls_getter(scenario1, &quot;identifiers&quot;, &quot;idType&quot;))</code></pre>
+<pre><code>## Warning in (function (..., deparse.level = 1) : number of columns of result
+## is not a multiple of vector length (arg 3)</code></pre>
+<pre><code>##               [,1]    [,2]      [,3]    [,4]        [,5]       
+## USC00050183   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00050185   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00050843   &quot;GHCND&quot; &quot;COOP&quot;    &quot;NWSLI&quot; &quot;NCDCSTNID&quot; &quot;GHCND&quot;    
+## USC00050848   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00050950   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00051681   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00052223   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00052759   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00052934   &quot;GHCND&quot; &quot;COOP&quot;    &quot;NWSLI&quot; &quot;NCDCSTNID&quot; &quot;GHCND&quot;    
+## USC00053629   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00054762   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00055116   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00055121   &quot;GHCND&quot; &quot;COOP&quot;    &quot;NWSLI&quot; &quot;NCDCSTNID&quot; &quot;GHCND&quot;    
+## USC00055805   &quot;GHCND&quot; &quot;COOP&quot;    &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00055881   &quot;GHCND&quot; &quot;COOP&quot;    &quot;NWSLI&quot; &quot;NCDCSTNID&quot; &quot;GHCND&quot;    
+## USC00055984   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00056816   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00058839   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## USC00058995   &quot;GHCND&quot; &quot;GHCNMLT&quot; &quot;COOP&quot;  &quot;NWSLI&quot;     &quot;NCDCSTNID&quot;
+## SNTL:322      &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNTL:412      &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNTL:663      &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNTL:305      &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNTL:564      &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNTL:838      &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNOW:05K23    &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNOW:05K18    &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNOW:05J25    &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNOW:05J22    &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNOW:05J21    &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNOW:05J18    &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNOW:05J08    &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## SNOW:05J05    &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:06719505 &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:200540   &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:09013000 &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:06716500 &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:09022500 &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:06738000 &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:06727000 &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:06710500 &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:700542   &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:BOSDELCO &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:06729500 &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## USGS:06724000 &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016260  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016130  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016060  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016290  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016280  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016020  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016180  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016190  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016200  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016220  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;     
+## BOR:06016300  &quot;NRCS&quot;  &quot;NRCS&quot;    &quot;NRCS&quot;  &quot;NRCS&quot;      &quot;NRCS&quot;</code></pre>
+<p>Because the number of associated networks is not equal across this set of stations, <code>do.call</code> “fills in” some of the blanks by repeating the vector per station (this is why a network may appear twice for a station). A cleaner way to assemble this data.frame (that introduces an ‘NA’ if the vectors are uneven) is to use <code>ldply</code> from the <code>plyr</code> package:</p>
+<pre class="r"><code>plyr::ldply(ls_getter(scenario1, &quot;identifiers&quot;, &quot;idType&quot;), rbind)</code></pre>
+<pre><code>##              .id     1       2     3         4         5
+## 1    USC00050183 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 2    USC00050185 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 3    USC00050843 GHCND    COOP NWSLI NCDCSTNID      &lt;NA&gt;
+## 4    USC00050848 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 5    USC00050950 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 6    USC00051681 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 7    USC00052223 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 8    USC00052759 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 9    USC00052934 GHCND    COOP NWSLI NCDCSTNID      &lt;NA&gt;
+## 10   USC00053629 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 11   USC00054762 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 12   USC00055116 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 13   USC00055121 GHCND    COOP NWSLI NCDCSTNID      &lt;NA&gt;
+## 14   USC00055805 GHCND    COOP  COOP     NWSLI NCDCSTNID
+## 15   USC00055881 GHCND    COOP NWSLI NCDCSTNID      &lt;NA&gt;
+## 16   USC00055984 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 17   USC00056816 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 18   USC00058839 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 19   USC00058995 GHCND GHCNMLT  COOP     NWSLI NCDCSTNID
+## 20      SNTL:322  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 21      SNTL:412  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 22      SNTL:663  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 23      SNTL:305  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 24      SNTL:564  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 25      SNTL:838  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 26    SNOW:05K23  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 27    SNOW:05K18  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 28    SNOW:05J25  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 29    SNOW:05J22  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 30    SNOW:05J21  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 31    SNOW:05J18  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 32    SNOW:05J08  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 33    SNOW:05J05  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 34 USGS:06719505  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 35   USGS:200540  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 36 USGS:09013000  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 37 USGS:06716500  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 38 USGS:09022500  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 39 USGS:06738000  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 40 USGS:06727000  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 41 USGS:06710500  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 42   USGS:700542  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 43 USGS:BOSDELCO  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 44 USGS:06729500  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 45 USGS:06724000  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 46  BOR:06016260  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 47  BOR:06016130  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 48  BOR:06016060  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 49  BOR:06016290  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 50  BOR:06016280  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 51  BOR:06016020  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 52  BOR:06016180  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 53  BOR:06016190  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 54  BOR:06016200  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 55  BOR:06016220  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;
+## 56  BOR:06016300  NRCS    &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;      &lt;NA&gt;</code></pre>
+</div>
+<div id="pratical-use-cases-with-metscanr" class="section level2">
+<h2>Pratical Use Cases with metScanR</h2>
+<div id="locate-and-map-the-occurrence-of-a-rarely-monitored-environmental-variable" class="section level3">
+<h3>Locate and Map the occurrence of a ‘rarely’ monitored environmental variable</h3>
+<pre class="r"><code>mapSiteFinder(getVars(&quot;conductivity&quot;))</code></pre>
+<div id="htmlwidget-20881adfbc4c4d8a42d9" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-20881adfbc4c4d8a42d9">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"Imagery from <a href=\"http://giscience.uni-hd.de/\">GIScience Research Group @ University of Heidelberg<\/a> &mdash; Map data &copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap<\/a>"}]},{"method":"addCircleMarkers","args":[[33.37859,40.03496,39.758246,35.95947,38.87,68.08],[-97.78226,-105.54487,-102.447103,-84.28041,-76.55,-163],4,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":["blue","blue","blue","blue","cyan","cyan"],"weight":1,"opacity":0.5,"fill":true,"fillColor":["blue","blue","blue","blue","cyan","cyan"],"fillOpacity":1,"dashArray":null},null,null,["<b> Name: <\/b> Pringle Creek Site <br> <b> Platform: <\/b> NEON <br>       <b> NEON ID: <\/b>PRIN<br>      <b>Start: <\/b> 2017-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> NA <br> <br>","<b> Name: <\/b> Como Creek Site <br> <b> Platform: <\/b> NEON <br>       <b> NEON ID: <\/b>COMO<br>      <b>Start: <\/b> 2015-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> NA <br> <br>","<b> Name: <\/b> Arikaree River Site <br> <b> Platform: <\/b> NEON <br>       <b> NEON ID: <\/b>ARIK<br>      <b>Start: <\/b> 2012-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> NA <br> <br>","<b> Name: <\/b> Walker Branch Site <br> <b> Platform: <\/b> NEON <br>       <b> NEON ID: <\/b>WALK<br>      <b>Start: <\/b> 2015-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> NA <br> <br>","<b> Name: <\/b> Rainy Day Creek #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:3004<br>     <b>Start: <\/b> 1996-12 <br> <b> End: <\/b> 1999-04 <br> <b> Elevation (m): <\/b> 8.23 <br> <br>","<b> Name: <\/b> Ikalukrok Creek <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:965<br>     <b>Start: <\/b> 1995-03 <br> <b> End: <\/b> 2016-01 <br> <b> Elevation (m): <\/b> 198.12 <br> <br>"],null,null,null,null]},{"method":"addLegend","args":[{"colors":["blue","cyan"],"labels":["NEON","SCAN"],"na_color":null,"na_label":"NA","opacity":1,"position":"bottomleft","type":"unknown","title":"Nearby Sites","extra":null,"layerId":null,"className":"info legend"}]}],"limits":{"lat":[33.37859,68.08],"lng":[-163,-76.55]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="map-an-entire-global-met-network" class="section level3">
+<h3>Map an entire global MET network</h3>
+<pre class="r"><code>## Save huge map as a PDF or png to share
+maps &lt;- mapSiteFinder(getNetwork(&quot;SCAN&quot;))
+maps</code></pre>
+<div id="htmlwidget-844ddd832b8c667f6a4c" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-844ddd832b8c667f6a4c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"Imagery from <a href=\"http://giscience.uni-hd.de/\">GIScience Research Group @ University of Heidelberg<\/a> &mdash; Map data &copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap<\/a>"}]},{"method":"addCircleMarkers","args":[[63.91,41.05,38.26,40.79,36.54,34.97,39.15,40.88,65.4,65.2,63.64,66.18,39.23,61.36,58.67,40.82,30.07,27.55,33.45,31.48,31.55,32.25,29.36,34.02,26.16,46.78,42.71,59.42,59.82,59.13,35.12,36.33,37.37,33.8,37.63,40.62,34.67,33.65,35.47,37,37.99,18.32,32.28,33.11,34.82,30.52,32.41,31.11,31.02,32.4,34.18,33.33,36.09,32.56,34.77,34.36,39.47,37.36,39.99,41.78,38.59,38.31,40.18,38.37,37.87,41.77,37.11,40.39,37.51,39.24,37.19,37.78,42.95,41.34,41.33,40.17,40.59,18.35,39.05,47.77,36.37,36.66,36.27,36.17,36.57,36.37,17.72,48.3,47.52,47.06,48.44,18.03,37.67,41.94,41.82,38.15,37.78,37.63,39.37,39.02,39.19,37.45,38.34,41,40.37,39.65,39.53,38.01,34.19,32.61,32.43,40.37,40.03,18.21,63.95,20,19.53,19.91,20.1,19.96,19.79,19.77,20.01,32.86,33.66,33.54,33.53,33.63,33.55,33.62,64.69,63.35,34.25,34.28,35.21,35.28,34.78,37.13,39.7,39.79,33,33.09,30.47,41.8,36.63,37.92,34.89,-77.85,37.19,42.02,18.47,43.74,35.07,35.14,35.06,61.58,59.68,59.68,34.78,34.43,34.45,34.87,34.85,34.43,34.9,42.43,39.02,37.07,38.87,33.97,33.62,33.63,43.93,17.97,17.98,42.02,47.72,36.78,40.25,18.15,18.15,25.5,43.78,40.72,34.3,32.67,38.23,36.68,43.05,44.53,34.85,31.73,31.5,33.38,34.25,34.23,32.75,34.68,34.07,35.55,34.95,40.67,18.32,18.32,38.87,68.08,40.87,29.1,30.3,33.88,40.32,37.1,39.25,45.42,32.33,35.87,46.77,40.85,34.25,42.88,39.95,35.17,30.08,47,45.47,42.07,48.48,47.21,41.9,45.8,43.32],[-160.75,-120.69,-119.13,-122.55,-120.55,-119.48,-90.78,-118.49,-164.71,-156.63,-158.03,-151.74,-92.12,-165.12,-156.57,-104.71,-94.29,-97.88,-99.87,-96.88,-100.51,-98.2,-100.25,-99.25,-97.96,-117.08,-90.39,-161.16,-156.99,-159.09,-119.6,-116.35,-117.97,-115.31,-118.83,-120.72,-115.17,-115.1,-115.72,-92.26,-94.04,-66.36,-86.05,-88.31,-87.99,-87.7,-85.91,-87.55,-85.04,-86.89,-87.46,-85.52,-106.06,-106.7,-106.76,-106.69,-117.62,-113.12,-114,-113.82,-113.75,-109.24,-110.3,-112.64,-112.43,-113.29,-113.36,-109.35,-111.26,-113.46,-112.19,-118.42,-117.01,-111.19,-111.3,-113.02,-112.39,-64.75,-95.19,-104.25,-115.82,-115.2,-115.61,-115.61,-115.2,-115.78,-64.8,-111.92,-107.13,-109.95,-111.18,-66.53,-109.36,-112.43,-111.98,-112.25,-109.17,-113.64,-111.58,-110.16,-112.4,-109.34,-113.01,-111.69,-110.41,-111.87,-110.81,-109.13,-86.8,-88.2,-85.75,-101.72,-118.18,-67.14,-145.08,-155.29,-155.93,-155.59,-155.51,-155.54,-155.33,-155.42,-155.6,-90.52,-90.57,-103.24,-103.63,-102.75,-102.37,-102.04,-148.91,-142.98,-92.03,-91.35,-92.92,-90.45,-90.82,-97.09,-96.16,-99.33,-91.06,-90.51,-88.74,-81.08,-80.13,-79.2,-86.6,166.76,-86.04,-121.39,-67.04,-96.61,-86.89,-86.19,-86.59,-159.58,-151.37,-151.38,-86.55,-87,-86.15,-86.1,-86.88,-86.68,-86.53,-95.77,-76.85,-93.88,-94.03,-90.9,-91.1,-88.77,-71.72,-66.87,-67.17,-93.73,-96.27,-89.93,-93.72,-66.77,-67,-80.55,-72.03,-77.93,-79.73,-81.2,-78.12,-76.77,-73.03,-72.83,-91.88,-110.05,-83.55,-90.65,-89.87,-89.9,-90.93,-90.42,-90.35,-98.02,-97.98,-76.67,-64.73,-64.72,-76.55,-163,-104.73,-81.63,-84.42,-83.43,-89.9,-87.83,-76.92,-93.95,-89.08,-76.65,-100.92,-96.47,-105.42,-77.03,-83.45,-102.1,-95.98,-118.57,-88.58,-104.13,-109.8,-105.19,-119.44,-111.59,-116],4,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":["blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue"],"weight":1,"opacity":0.5,"fill":true,"fillColor":["blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue"],"fillOpacity":1,"dashArray":null},null,null,["<b> Name: <\/b> Unalakleet <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2221<br>     <b>Start: <\/b> 2015-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 88.392 <br> <br>","<b> Name: <\/b> Ash Valley <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2214<br>     <b>Start: <\/b> 2014-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1553.566 <br> <br>","<b> Name: <\/b> Bodie Hills <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2215<br>     <b>Start: <\/b> 2014-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2385.06 <br> <br>","<b> Name: <\/b> French Gulch <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2218<br>     <b>Start: <\/b> 2014-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1128.979 <br> <br>","<b> Name: <\/b> Monocline Ridge <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2217<br>     <b>Start: <\/b> 2014-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 266.7 <br> <br>","<b> Name: <\/b> Stubblefield <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2219<br>     <b>Start: <\/b> 2014-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 912.876 <br> <br>","<b> Name: <\/b> Elsberry PMC <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2220<br>     <b>Start: <\/b> 2015-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 138.074 <br> <br>","<b> Name: <\/b> Buckhorn <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2216<br>     <b>Start: <\/b> 2014-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1196.34 <br> <br>","<b> Name: <\/b> Checkers Creek <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2213<br>     <b>Start: <\/b> 2014-07 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 99.365 <br> <br>","<b> Name: <\/b> Hozatka Lake <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2210<br>     <b>Start: <\/b> 2014-07 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 62.789 <br> <br>","<b> Name: <\/b> Innoko Camp <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2211<br>     <b>Start: <\/b> 2014-07 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 25.298 <br> <br>","<b> Name: <\/b> Kanuti Lake <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2212<br>     <b>Start: <\/b> 2014-07 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 159.715 <br> <br>","<b> Name: <\/b> CMRB LTAR-MO <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2195<br>     <b>Start: <\/b> 2014-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 259.69 <br> <br>","<b> Name: <\/b> Kanaryagak Camp <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2208<br>     <b>Start: <\/b> 2013-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3.962 <br> <br>","<b> Name: <\/b> Naknek River <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2209<br>     <b>Start: <\/b> 2013-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 30.48 <br> <br>","<b> Name: <\/b> CPER <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2197<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1624.584 <br> <br>","<b> Name: <\/b> Beaumont <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2207<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 5.791 <br> <br>","<b> Name: <\/b> Kingsville <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2206<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 20.422 <br> <br>","<b> Name: <\/b> Knox City <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2201<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 441.35 <br> <br>","<b> Name: <\/b> Riesel <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2199<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 164.287 <br> <br>","<b> Name: <\/b> San Angelo <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2200<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 600.456 <br> <br>","<b> Name: <\/b> Stephenville <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2203<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 399.593 <br> <br>","<b> Name: <\/b> Uvalde <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2204<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 278.892 <br> <br>","<b> Name: <\/b> Vernon <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2202<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 360.883 <br> <br>","<b> Name: <\/b> Weslaco <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2205<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 17.374 <br> <br>","<b> Name: <\/b> Cook Farm Field D <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2198<br>     <b>Start: <\/b> 2013-07 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 831.19 <br> <br>","<b> Name: <\/b> UW Platteville <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2196<br>     <b>Start: <\/b> 2013-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 327.66 <br> <br>","<b> Name: <\/b> Canyon Lake <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:1232<br>     <b>Start: <\/b> 2012-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 167.64 <br> <br>","<b> Name: <\/b> Lower Mulchatna <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:1233<br>     <b>Start: <\/b> 2012-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 97.536 <br> <br>","<b> Name: <\/b> Weary Lake <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:1234<br>     <b>Start: <\/b> 2012-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 30.48 <br> <br>","<b> Name: <\/b> Cochora Ranch <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2189<br>     <b>Start: <\/b> 2012-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 822.046 <br> <br>","<b> Name: <\/b> Death Valley Jct <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2190<br>     <b>Start: <\/b> 2012-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 628.498 <br> <br>","<b> Name: <\/b> Deep Springs <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2187<br>     <b>Start: <\/b> 2011-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1645.615 <br> <br>","<b> Name: <\/b> Desert Center <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2183<br>     <b>Start: <\/b> 2011-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 169.469 <br> <br>","<b> Name: <\/b> Doe Ridge <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2191<br>     <b>Start: <\/b> 2012-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2237.232 <br> <br>","<b> Name: <\/b> Eagle Lake <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2192<br>     <b>Start: <\/b> 2012-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1564.843 <br> <br>","<b> Name: <\/b> Essex <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2185<br>     <b>Start: <\/b> 2011-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 805.891 <br> <br>","<b> Name: <\/b> Ford Dry Lake <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2184<br>     <b>Start: <\/b> 2011-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 120.091 <br> <br>","<b> Name: <\/b> Shadow Mtns <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2186<br>     <b>Start: <\/b> 2011-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1110.386 <br> <br>","<b> Name: <\/b> Journagan Ranch <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2194<br>     <b>Start: <\/b> 2012-07 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 337.109 <br> <br>","<b> Name: <\/b> Schell-Osage <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2193<br>     <b>Start: <\/b> 2012-07 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 241.706 <br> <br>","<b> Name: <\/b> Corozal <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2188<br>     <b>Start: <\/b> 2012-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 259.69 <br> <br>","<b> Name: <\/b> Broad Acres <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2177<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 81.991 <br> <br>","<b> Name: <\/b> Dee River Ranch <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2174<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 48.768 <br> <br>","<b> Name: <\/b> Isbell Farms <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2173<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 183.794 <br> <br>","<b> Name: <\/b> Koptis Farms <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2180<br>     <b>Start: <\/b> 2010-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 41.148 <br> <br>","<b> Name: <\/b> Morris Farms <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2178<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 67.056 <br> <br>","<b> Name: <\/b> Perdido Riv Farms <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2181<br>     <b>Start: <\/b> 2010-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 91.135 <br> <br>","<b> Name: <\/b> River Road Farms <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2182<br>     <b>Start: <\/b> 2010-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 32.614 <br> <br>","<b> Name: <\/b> Selma <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2176<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 42.672 <br> <br>","<b> Name: <\/b> Sudduth Farms <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2179<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 235.306 <br> <br>","<b> Name: <\/b> Wedowee <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2175<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 284.683 <br> <br>","<b> Name: <\/b> Alcalde <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2172<br>     <b>Start: <\/b> 2010-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1735.226 <br> <br>","<b> Name: <\/b> Jornada Exp Range <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2168<br>     <b>Start: <\/b> 2009-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1328.928 <br> <br>","<b> Name: <\/b> Los Lunas PMC <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2169<br>     <b>Start: <\/b> 2009-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1477.061 <br> <br>","<b> Name: <\/b> Sevilleta <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2171<br>     <b>Start: <\/b> 2010-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1595.018 <br> <br>","<b> Name: <\/b> Porter Canyon <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2170<br>     <b>Start: <\/b> 2009-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2190.598 <br> <br>","<b> Name: <\/b> Cave Valley <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2161<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1912.01 <br> <br>","<b> Name: <\/b> Goshute <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2165<br>     <b>Start: <\/b> 2010-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1672.438 <br> <br>","<b> Name: <\/b> Grouse Creek <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2160<br>     <b>Start: <\/b> 2010-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1778.508 <br> <br>","<b> Name: <\/b> Hals Canyon <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2164<br>     <b>Start: <\/b> 2010-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1603.248 <br> <br>","<b> Name: <\/b> Harms Way <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2166<br>     <b>Start: <\/b> 2010-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2150.364 <br> <br>","<b> Name: <\/b> Little Red Fox <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2155<br>     <b>Start: <\/b> 2010-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1644.396 <br> <br>","<b> Name: <\/b> Manderfield <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2156<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1885.188 <br> <br>","<b> Name: <\/b> Panguitch <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2157<br>     <b>Start: <\/b> 2010-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1991.563 <br> <br>","<b> Name: <\/b> Park Valley <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2153<br>     <b>Start: <\/b> 2010-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1553.87 <br> <br>","<b> Name: <\/b> Sand Hollow <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2159<br>     <b>Start: <\/b> 2010-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 941.222 <br> <br>","<b> Name: <\/b> Split Mountain <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2154<br>     <b>Start: <\/b> 2010-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1476.451 <br> <br>","<b> Name: <\/b> Spooky <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2158<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1627.937 <br> <br>","<b> Name: <\/b> Tule Valley <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2163<br>     <b>Start: <\/b> 2010-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1399.642 <br> <br>","<b> Name: <\/b> Vermillion <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2162<br>     <b>Start: <\/b> 2010-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1948.282 <br> <br>","<b> Name: <\/b> Marble Creek <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2149<br>     <b>Start: <\/b> 2009-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1884.578 <br> <br>","<b> Name: <\/b> Jordan Valley Cwma <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2148<br>     <b>Start: <\/b> 2008-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1374.038 <br> <br>","<b> Name: <\/b> Buffalo Jump <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2151<br>     <b>Start: <\/b> 2009-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2036.674 <br> <br>","<b> Name: <\/b> Chicken Ridge <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2150<br>     <b>Start: <\/b> 2009-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2331.415 <br> <br>","<b> Name: <\/b> Dugway <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2167<br>     <b>Start: <\/b> 2009-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1314.907 <br> <br>","<b> Name: <\/b> Grantsville <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2152<br>     <b>Start: <\/b> 2009-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1321.918 <br> <br>","<b> Name: <\/b> Cinnamon Bay <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2124<br>     <b>Start: <\/b> 2008-11 <br> <b> End: <\/b> 2015-01 <br> <b> Elevation (m): <\/b> 94.488 <br> <br>","<b> Name: <\/b> Ku-Nesa <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2147<br>     <b>Start: <\/b> 2008-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 335.89 <br> <br>","<b> Name: <\/b> Sidney <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2120<br>     <b>Start: <\/b> 2007-12 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 693.115 <br> <br>","<b> Name: <\/b> Charkiln <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2145<br>     <b>Start: <\/b> 2007-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2036.978 <br> <br>","<b> Name: <\/b> Hayford Peak <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2143<br>     <b>Start: <\/b> 2007-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3008.376 <br> <br>","<b> Name: <\/b> Kyle Canyon <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2141<br>     <b>Start: <\/b> 2007-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2147.621 <br> <br>","<b> Name: <\/b> Lovell Summit <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2146<br>     <b>Start: <\/b> 2007-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2006.194 <br> <br>","<b> Name: <\/b> Pine Nut <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2144<br>     <b>Start: <\/b> 2007-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2066.544 <br> <br>","<b> Name: <\/b> Trough Springs <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2142<br>     <b>Start: <\/b> 2007-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2391.461 <br> <br>","<b> Name: <\/b> Upper Bethlehem <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2123<br>     <b>Start: <\/b> 2008-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 36.271 <br> <br>","<b> Name: <\/b> Conrad Ag Rc <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2117<br>     <b>Start: <\/b> 2006-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1129.589 <br> <br>","<b> Name: <\/b> Jordan <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2121<br>     <b>Start: <\/b> 2007-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 859.536 <br> <br>","<b> Name: <\/b> Moccasin <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2119<br>     <b>Start: <\/b> 2006-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1297.229 <br> <br>","<b> Name: <\/b> Violett <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2118<br>     <b>Start: <\/b> 2006-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 982.98 <br> <br>","<b> Name: <\/b> Fortuna <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2122<br>     <b>Start: <\/b> 2006-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 28.346 <br> <br>","<b> Name: <\/b> Alkali Mesa <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2138<br>     <b>Start: <\/b> 2007-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1964.436 <br> <br>","<b> Name: <\/b> Blue Creek <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2135<br>     <b>Start: <\/b> 2007-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1578.559 <br> <br>","<b> Name: <\/b> Cache Junction <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2136<br>     <b>Start: <\/b> 2007-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1348.74 <br> <br>","<b> Name: <\/b> Circleville <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2125<br>     <b>Start: <\/b> 2007-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1865.376 <br> <br>","<b> Name: <\/b> Eastland <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2130<br>     <b>Start: <\/b> 2007-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2083.918 <br> <br>","<b> Name: <\/b> Enterprise <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2128<br>     <b>Start: <\/b> 2007-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1600.2 <br> <br>","<b> Name: <\/b> Ephraim <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2126<br>     <b>Start: <\/b> 2007-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1685.849 <br> <br>","<b> Name: <\/b> Green River <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2131<br>     <b>Start: <\/b> 2007-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1250.594 <br> <br>","<b> Name: <\/b> Holden <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2127<br>     <b>Start: <\/b> 2007-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1446.276 <br> <br>","<b> Name: <\/b> Mccracken Mesa <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2140<br>     <b>Start: <\/b> 2007-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1620.012 <br> <br>","<b> Name: <\/b> Milford <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2129<br>     <b>Start: <\/b> 2007-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1525.524 <br> <br>","<b> Name: <\/b> Morgan <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2133<br>     <b>Start: <\/b> 2007-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1558.442 <br> <br>","<b> Name: <\/b> Mountain Home <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2134<br>     <b>Start: <\/b> 2007-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2111.35 <br> <br>","<b> Name: <\/b> Nephi <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2137<br>     <b>Start: <\/b> 2007-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1598.676 <br> <br>","<b> Name: <\/b> Price <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2132<br>     <b>Start: <\/b> 2007-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1718.158 <br> <br>","<b> Name: <\/b> West Summit <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2139<br>     <b>Start: <\/b> 2007-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2131.466 <br> <br>","<b> Name: <\/b> Cullman-NAHRC <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2113<br>     <b>Start: <\/b> 2006-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 243.535 <br> <br>","<b> Name: <\/b> Livingston-UWA <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2114<br>     <b>Start: <\/b> 2006-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 43.891 <br> <br>","<b> Name: <\/b> Tuskegee <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2115<br>     <b>Start: <\/b> 2006-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 121.92 <br> <br>","<b> Name: <\/b> Johnson Farm <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2111<br>     <b>Start: <\/b> 2005-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1018.337 <br> <br>","<b> Name: <\/b> Lovelock NNR <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2116<br>     <b>Start: <\/b> 2006-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1199.083 <br> <br>","<b> Name: <\/b> Mayaguez TARS <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2112<br>     <b>Start: <\/b> 2006-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 13.716 <br> <br>","<b> Name: <\/b> Ward Farm <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2095<br>     <b>Start: <\/b> 2005-08 <br> <b> End: <\/b> 2011-12 <br> <b> Elevation (m): <\/b> 384.048 <br> <br>","<b> Name: <\/b> Island Dairy <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2100<br>     <b>Start: <\/b> 2005-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 353.568 <br> <br>","<b> Name: <\/b> Kainaliu <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2096<br>     <b>Start: <\/b> 2005-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 415.747 <br> <br>","<b> Name: <\/b> Kemole Gulch <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2103<br>     <b>Start: <\/b> 2005-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1268.882 <br> <br>","<b> Name: <\/b> Kukuihaele <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2097<br>     <b>Start: <\/b> 2005-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 288.646 <br> <br>","<b> Name: <\/b> Mana House <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2102<br>     <b>Start: <\/b> 2005-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1290.523 <br> <br>","<b> Name: <\/b> Pua Akala <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2098<br>     <b>Start: <\/b> 2005-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1948.891 <br> <br>","<b> Name: <\/b> Silver Sword <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2101<br>     <b>Start: <\/b> 2005-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2841.955 <br> <br>","<b> Name: <\/b> Waimea Plain <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2099<br>     <b>Start: <\/b> 2005-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 926.287 <br> <br>","<b> Name: <\/b> Mayday <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2110<br>     <b>Start: <\/b> 2005-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 32.918 <br> <br>","<b> Name: <\/b> Sandy Ridge <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2109<br>     <b>Start: <\/b> 2005-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 42.062 <br> <br>","<b> Name: <\/b> Crossroads <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2107<br>     <b>Start: <\/b> 2005-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1235.964 <br> <br>","<b> Name: <\/b> Willow Wells <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2108<br>     <b>Start: <\/b> 2005-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1382.878 <br> <br>","<b> Name: <\/b> Lehman <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2106<br>     <b>Start: <\/b> 2005-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1148.182 <br> <br>","<b> Name: <\/b> Levelland <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2105<br>     <b>Start: <\/b> 2005-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1069.848 <br> <br>","<b> Name: <\/b> Reese Center <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2104<br>     <b>Start: <\/b> 2005-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1015.898 <br> <br>","<b> Name: <\/b> Nenana <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2081<br>     <b>Start: <\/b> 2003-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 126.492 <br> <br>","<b> Name: <\/b> Tok <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2080<br>     <b>Start: <\/b> 2003-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 496.824 <br> <br>","<b> Name: <\/b> Uapb Campus-PB <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2083<br>     <b>Start: <\/b> 2004-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 70.714 <br> <br>","<b> Name: <\/b> Uapb Dewitt <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2091<br>     <b>Start: <\/b> 2004-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 60.046 <br> <br>","<b> Name: <\/b> Uapb Point Remove <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2090<br>     <b>Start: <\/b> 2004-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 96.012 <br> <br>","<b> Name: <\/b> Uapb-Earle <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2085<br>     <b>Start: <\/b> 2004-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 64.922 <br> <br>","<b> Name: <\/b> Uapb-Marianna <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2084<br>     <b>Start: <\/b> 2004-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 66.142 <br> <br>","<b> Name: <\/b> Abrams <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2092<br>     <b>Start: <\/b> 2004-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 363.931 <br> <br>","<b> Name: <\/b> Centralia Lake <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2094<br>     <b>Start: <\/b> 2004-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 396.85 <br> <br>","<b> Name: <\/b> Phillipsburg <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2093<br>     <b>Start: <\/b> 2004-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 605.333 <br> <br>","<b> Name: <\/b> North Issaquena <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2087<br>     <b>Start: <\/b> 2004-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 34.138 <br> <br>","<b> Name: <\/b> Silver City <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2086<br>     <b>Start: <\/b> 2004-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 35.052 <br> <br>","<b> Name: <\/b> Tnc Fort Bayou <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2082<br>     <b>Start: <\/b> 2003-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 13.106 <br> <br>","<b> Name: <\/b> Sunleaf Nursery <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2073<br>     <b>Start: <\/b> 2003-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 204.216 <br> <br>","<b> Name: <\/b> Reynolds Homestead <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2089<br>     <b>Start: <\/b> 2004-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 343.51 <br> <br>","<b> Name: <\/b> Shenandoah <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2088<br>     <b>Start: <\/b> 2004-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 537.362 <br> <br>","<b> Name: <\/b> Bragg Farm <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2078<br>     <b>Start: <\/b> 2003-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 243.23 <br> <br>","<b> Name: <\/b> Scott Base <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2071<br>     <b>Start: <\/b> 2003-01 <br> <b> End: <\/b> 2009-01 <br> <b> Elevation (m): <\/b> 37.49 <br> <br>","<b> Name: <\/b> Mammoth Cave <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2079<br>     <b>Start: <\/b> 2003-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 243.84 <br> <br>","<b> Name: <\/b> Lynhart Ranch <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2074<br>     <b>Start: <\/b> 2003-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1247.242 <br> <br>","<b> Name: <\/b> Isabela <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2052<br>     <b>Start: <\/b> 2003-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 15.24 <br> <br>","<b> Name: <\/b> Eros Data Center <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2072<br>     <b>Start: <\/b> 2003-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 488.29 <br> <br>","<b> Name: <\/b> Allen Farms <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2076<br>     <b>Start: <\/b> 2003-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 214.884 <br> <br>","<b> Name: <\/b> Eastview Farm <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2077<br>     <b>Start: <\/b> 2003-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 321.259 <br> <br>","<b> Name: <\/b> McAllister Farm <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2075<br>     <b>Start: <\/b> 2003-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 278.282 <br> <br>","<b> Name: <\/b> Aniak <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2065<br>     <b>Start: <\/b> 2002-07 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 24.384 <br> <br>","<b> Name: <\/b> Moose Inc <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2062<br>     <b>Start: <\/b> 2002-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 40.234 <br> <br>","<b> Name: <\/b> Schor Garden <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2063<br>     <b>Start: <\/b> 2002-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 119.786 <br> <br>","<b> Name: <\/b> AAMU-JTG <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2057<br>     <b>Start: <\/b> 2002-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 262.128 <br> <br>","<b> Name: <\/b> Hartselle Usda <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2058<br>     <b>Start: <\/b> 2002-04 <br> <b> End: <\/b> 2014-12 <br> <b> Elevation (m): <\/b> 192.938 <br> <br>","<b> Name: <\/b> Hodges <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2055<br>     <b>Start: <\/b> 2002-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 222.504 <br> <br>","<b> Name: <\/b> Hytop <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2054<br>     <b>Start: <\/b> 2002-02 <br> <b> End: <\/b> 2015-06 <br> <b> Elevation (m): <\/b> 544.068 <br> <br>","<b> Name: <\/b> Newby Farm <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2059<br>     <b>Start: <\/b> 2002-04 <br> <b> End: <\/b> 2015-06 <br> <b> Elevation (m): <\/b> 249.936 <br> <br>","<b> Name: <\/b> Stanley Farm <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2056<br>     <b>Start: <\/b> 2002-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 193.548 <br> <br>","<b> Name: <\/b> Wtars <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2053<br>     <b>Start: <\/b> 2002-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 190.5 <br> <br>","<b> Name: <\/b> Shagbark Hills <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2068<br>     <b>Start: <\/b> 2002-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 426.72 <br> <br>","<b> Name: <\/b> Powder Mill <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2049<br>     <b>Start: <\/b> 2001-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 32.004 <br> <br>","<b> Name: <\/b> Mt Vernon <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2060<br>     <b>Start: <\/b> 2002-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 350.52 <br> <br>","<b> Name: <\/b> Powell Gardens <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2061<br>     <b>Start: <\/b> 2002-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 292.608 <br> <br>","<b> Name: <\/b> Perthshire <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2046<br>     <b>Start: <\/b> 2002-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 60.96 <br> <br>","<b> Name: <\/b> Scott <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2070<br>     <b>Start: <\/b> 2002-08 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 50.292 <br> <br>","<b> Name: <\/b> Starkville <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2064<br>     <b>Start: <\/b> 2002-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 103.632 <br> <br>","<b> Name: <\/b> Hubbard Brook <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2069<br>     <b>Start: <\/b> 2002-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 451.104 <br> <br>","<b> Name: <\/b> Bosque Seco <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2067<br>     <b>Start: <\/b> 2002-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 164.897 <br> <br>","<b> Name: <\/b> Combate <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2066<br>     <b>Start: <\/b> 2002-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 10.058 <br> <br>","<b> Name: <\/b> Ames <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2031<br>     <b>Start: <\/b> 2001-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 327.05 <br> <br>","<b> Name: <\/b> Glacial Ridge <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2050<br>     <b>Start: <\/b> 2001-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 342.9 <br> <br>","<b> Name: <\/b> Dexter <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2048<br>     <b>Start: <\/b> 2001-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 92.964 <br> <br>","<b> Name: <\/b> Spickard <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2047<br>     <b>Start: <\/b> 2001-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 277.673 <br> <br>","<b> Name: <\/b> Guilarte Forest <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2045<br>     <b>Start: <\/b> 2001-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1019.556 <br> <br>","<b> Name: <\/b> Maricao Forest <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:15<br>     <b>Start: <\/b> 2001-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 746.76 <br> <br>","<b> Name: <\/b> Everglades ARS <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2051<br>     <b>Start: <\/b> 1999-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2.743 <br> <br>","<b> Name: <\/b> Mascoma River <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2043<br>     <b>Start: <\/b> 1999-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 426.72 <br> <br>","<b> Name: <\/b> Rock Springs Pa <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2036<br>     <b>Start: <\/b> 1999-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 371.856 <br> <br>","<b> Name: <\/b> Pee Dee <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2037<br>     <b>Start: <\/b> 1999-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 36.576 <br> <br>","<b> Name: <\/b> Youmans Farm <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2038<br>     <b>Start: <\/b> 1999-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 22.86 <br> <br>","<b> Name: <\/b> N Piedmont Arec <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2039<br>     <b>Start: <\/b> 2000-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 158.496 <br> <br>","<b> Name: <\/b> Tidewater Arec <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2040<br>     <b>Start: <\/b> 2000-06 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 24.384 <br> <br>","<b> Name: <\/b> Lye Brook <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2042<br>     <b>Start: <\/b> 2000-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 742.188 <br> <br>","<b> Name: <\/b> Mount Mansfield <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2041<br>     <b>Start: <\/b> 2000-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 681.533 <br> <br>","<b> Name: <\/b> Uapb-Lonoke Farm <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2030<br>     <b>Start: <\/b> 1999-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 76.2 <br> <br>","<b> Name: <\/b> Walnut Gulch #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2026<br>     <b>Start: <\/b> 1999-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1371.6 <br> <br>","<b> Name: <\/b> Little River <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2027<br>     <b>Start: <\/b> 1999-05 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 106.68 <br> <br>","<b> Name: <\/b> Beasley Lake <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2032<br>     <b>Start: <\/b> 1999-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 35.052 <br> <br>","<b> Name: <\/b> Goodwin Ck Pasture <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2024<br>     <b>Start: <\/b> 1999-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 97.536 <br> <br>","<b> Name: <\/b> Goodwin Ck Timber <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2025<br>     <b>Start: <\/b> 1999-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 97.536 <br> <br>","<b> Name: <\/b> Onward <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2033<br>     <b>Start: <\/b> 1999-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 30.48 <br> <br>","<b> Name: <\/b> Tunica <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2034<br>     <b>Start: <\/b> 1999-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 79.248 <br> <br>","<b> Name: <\/b> Vance <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2035<br>     <b>Start: <\/b> 1999-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 45.72 <br> <br>","<b> Name: <\/b> Fort Reno #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2022<br>     <b>Start: <\/b> 1998-11 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 426.72 <br> <br>","<b> Name: <\/b> Little Washita #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2023<br>     <b>Start: <\/b> 1998-11 <br> <b> End: <\/b> 2013-08 <br> <b> Elevation (m): <\/b> 358.14 <br> <br>","<b> Name: <\/b> Mahantango Ck <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2028<br>     <b>Start: <\/b> 1999-04 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 222.504 <br> <br>","<b> Name: <\/b> Lameshur2 #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:3005<br>     <b>Start: <\/b> 1997-11 <br> <b> End: <\/b> 2001-02 <br> <b> Elevation (m): <\/b> 6.096 <br> <br>","<b> Name: <\/b> Lameshur4 #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:3006<br>     <b>Start: <\/b> 1998-02 <br> <b> End: <\/b> 2001-03 <br> <b> Elevation (m): <\/b> 344.424 <br> <br>","<b> Name: <\/b> Rainy Day Creek #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:3004<br>     <b>Start: <\/b> 1996-12 <br> <b> End: <\/b> 1999-04 <br> <b> Elevation (m): <\/b> 8.23 <br> <br>","<b> Name: <\/b> Ikalukrok Creek <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:965<br>     <b>Start: <\/b> 1995-03 <br> <b> End: <\/b> 2016-01 <br> <b> Elevation (m): <\/b> 198.12 <br> <br>","<b> Name: <\/b> Nunn #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2017<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1798.32 <br> <br>","<b> Name: <\/b> Sellers Lake #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2012<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 22.86 <br> <br>","<b> Name: <\/b> Wakulla #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2009<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 45.72 <br> <br>","<b> Name: <\/b> Watkinsville #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2013<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 234.696 <br> <br>","<b> Name: <\/b> Mason #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2004<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 173.736 <br> <br>","<b> Name: <\/b> Princeton #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2005<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 187.452 <br> <br>","<b> Name: <\/b> Ellicott #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2007<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> 1998-12 <br> <b> Elevation (m): <\/b> 140.208 <br> <br>","<b> Name: <\/b> Crescent Lake #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2002<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 298.704 <br> <br>","<b> Name: <\/b> Newton #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2010<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> 2003-07 <br> <b> Elevation (m): <\/b> 91.44 <br> <br>","<b> Name: <\/b> Tidewater #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2008<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 6.096 <br> <br>","<b> Name: <\/b> Mandan #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2020<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 588.264 <br> <br>","<b> Name: <\/b> Rogers Farm #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2001<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 370.332 <br> <br>","<b> Name: <\/b> Adams Ranch #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2015<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1882.14 <br> <br>","<b> Name: <\/b> Geneva #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2011<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 220.98 <br> <br>","<b> Name: <\/b> Molly Caren #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2014<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 323.088 <br> <br>","<b> Name: <\/b> Bushland #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2006<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1164.336 <br> <br>","<b> Name: <\/b> Prairie View #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2016<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 82.296 <br> <br>","<b> Name: <\/b> Lind #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2021<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 499.872 <br> <br>","<b> Name: <\/b> Wabeno #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2003<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 481.584 <br> <br>","<b> Name: <\/b> Torrington #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2018<br>     <b>Start: <\/b> 1994-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1304.544 <br> <br>","<b> Name: <\/b> Fort Assiniboine #1 <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:2019<br>     <b>Start: <\/b> 1992-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 826.008 <br> <br>","<b> Name: <\/b> Lindsay <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:581<br>     <b>Start: <\/b> 1991-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 875.081 <br> <br>","<b> Name: <\/b> Sheldon <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:750<br>     <b>Start: <\/b> 1989-02 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1787.652 <br> <br>","<b> Name: <\/b> Table Mountain <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:808<br>     <b>Start: <\/b> 1986-10 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1363.675 <br> <br>","<b> Name: <\/b> Orchard Range Site <br> <b> Platform: <\/b> SCAN <br>        <b> NRCS ID: <\/b>SCAN:674<br>     <b>Start: <\/b> 1984-03 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 975.36 <br> <br>"],null,null,null,null]},{"method":"addLegend","args":[{"colors":["blue"],"labels":["SCAN"],"na_color":null,"na_label":"NA","opacity":1,"position":"bottomleft","type":"unknown","title":"Nearby Sites","extra":null,"layerId":null,"className":"info legend"}]}],"limits":{"lat":[-77.85,68.08],"lng":[-165.12,166.76]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="find-the-oldest-continuously-monitoring-weather-station" class="section level3">
+<h3>Find the oldest continuously monitoring weather station</h3>
+<pre class="r"><code>oldest &lt;- getDates(startDate = &quot;1800-01-01&quot;, endDate=&quot;2015-01-01&quot;) # search for stations that begin at the turn of the 19th century and monitor to 2015
+length(oldest) # count to see how many stations metScanR finds</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>names(oldest) # see what the stationIDs are</code></pre>
+<pre><code>## [1] &quot;USC00226177&quot; &quot;USW00013782&quot;</code></pre>
+<pre class="r"><code>oldest$USC00226177</code></pre>
 <pre><code>## $namez
 ## [1] &quot;NATCHEZ&quot;
 ## 
@@ -422,40 +740,123 @@ old$USC00226177</code></pre>
 ## 1       31.589      -91.3409 59.4 UNITED STATES    MS  ADAMS        -6
 ##   date.begin date.end
 ## 1 1799-01-01  present</code></pre>
-<pre class="r"><code>olddata &lt;- get_single_acis(&quot;226177&quot;, start_date=&quot;1800-01-01&quot;, end_date=&quot;2009-12-01&quot;)</code></pre>
-<pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
-<pre><code>## [1] &quot;226177&quot;</code></pre>
-<pre class="r"><code>head(olddata)</code></pre>
-<pre><code>##         date mint maxt avgt pcpn snow snwd obst    sid
-## 1 1800-01-01    M    M    M    M    M    M    M 226177
-## 2 1800-01-02    M    M    M    M    M    M    M 226177
-## 3 1800-01-03    M    M    M    M    M    M    M 226177
-## 4 1800-01-04    M    M    M    M    M    M    M 226177
-## 5 1800-01-05    M    M    M    M    M    M    M 226177
-## 6 1800-01-06    M    M    M    M    M    M    M 226177</code></pre>
-<pre class="r"><code>tail(olddata)</code></pre>
-<pre><code>##             date mint maxt avgt pcpn snow snwd obst    sid
-## 76667 2009-11-26   32   61 46.5 0.00  0.0    0   44 226177
-## 76668 2009-11-27   30   56 43.0 0.00  0.0    0   30 226177
-## 76669 2009-11-28   30   63 46.5 0.00  0.0    0   41 226177
-## 76670 2009-11-29   41   66 53.5 0.00  0.0    0   56 226177
-## 76671 2009-11-30   55   75 65.0 0.49  0.0    0   55 226177
-## 76672 2009-12-01   40   55 47.5 0.02  0.0    0   40 226177</code></pre>
-<pre class="r"><code>library(ggplot2)
-#ggplot(data = olddata, aes(x = date, y = avgt)) + geom_point()</code></pre>
 </div>
-<div id="interactively-visualize-data-with-leaflet" class="section level2">
-<h2>Interactively visualize data with Leaflet</h2>
-<p>The raw station meta-data can be viewed interactively by calling the <code>mapSiteFinder</code> function on a siteFinder object in RStudio e.g.:</p>
-<pre class="r"><code>mapSiteFinder(scenario1)</code></pre>
-<div id="htmlwidget-631ea8f705a67cabc879" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-631ea8f705a67cabc879">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}",null,null,{"minZoom":0,"maxZoom":18,"maxNativeZoom":null,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"continuousWorld":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false,"attribution":"Imagery from <a href=\"http://giscience.uni-hd.de/\">GIScience Research Group @ University of Heidelberg<\/a> &mdash; Map data &copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap<\/a>"}]},{"method":"addCircleMarkers","args":[[40.188,40.22889,39.9919,39.9436,39.8958,39.7294,40.37667,39.9363,39.7488,40.15889,40.0361,39.8988,39.8297,40.4256,39.7749],[-105.5019,-105.51833,-105.2667,-104.8361,-105.3847,-105.0083,-105.48583,-105.3502,-105.1205,-105.07361,-105.5461,-105.0133,-105.2352,-105.2103,-105.117],4,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":true,"color":["blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue"],"weight":1,"opacity":0.5,"fill":true,"fillColor":["blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue","blue"],"fillOpacity":1,"dashArray":null},null,null,["<b> Name: <\/b> ALLENSPARK 2NNW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050183<br>  <b> GHCND ID: <\/b>USC00050183<br> <b> GHCNMLT ID: <\/b>USC00050183<br>  <b> NCDC ID: <\/b>20003839<br>   <b> NWSLI ID: <\/b>ALKC2<br>    <b>Start: <\/b> 1948-08-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2503.9 <br> <br>","<b> Name: <\/b> ALLENSPARK 3NW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050185<br>  <b> GHCND ID: <\/b>USC00050185<br> <b> GHCNMLT ID: <\/b>USC00050185<br>  <b> NCDC ID: <\/b>20003997<br>   <b> NWSLI ID: <\/b>APKC2<br>    <b>Start: <\/b> 1994-01-01 <br> <b> End: <\/b> 2004-07-01 <br> <b> Elevation (m): <\/b> 2590.8 <br> <br>","<b> Name: <\/b> BOULDER <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050848<br>  <b> GHCND ID: <\/b>USC00050848<br> <b> GHCNMLT ID: <\/b>USC00050848<br>  <b> NCDC ID: <\/b>10100133<br>   <b> NWSLI ID: <\/b>BOUC2<br>    <b>Start: <\/b> 1893-10-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1671.5 <br> <br>","<b> Name: <\/b> BRIGHTON 3 SE <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>050950<br>  <b> GHCND ID: <\/b>USC00050950<br> <b> GHCNMLT ID: <\/b>USC00050950<br>  <b> NCDC ID: <\/b>20003800<br>   <b> NWSLI ID: <\/b>BRIC2<br>    <b>Start: <\/b> 1972-10-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1528.9 <br> <br>","<b> Name: <\/b> COAL CREEK CANYON <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>051681<br>  <b> GHCND ID: <\/b>USC00051681<br> <b> GHCNMLT ID: <\/b>USC00051681<br>  <b> NCDC ID: <\/b>20004000<br>   <b> NWSLI ID: <\/b>CCCC2<br>    <b>Start: <\/b> 1984-07-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2728 <br> <br>","<b> Name: <\/b> DENVER WATER DEPT <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>052223<br>  <b> GHCND ID: <\/b>USC00052223<br> <b> GHCNMLT ID: <\/b>USC00052223<br>  <b> NCDC ID: <\/b>30000354<br>   <b> NWSLI ID: <\/b>DVNC2<br>    <b>Start: <\/b> 1997-08-19 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1593.5 <br> <br>","<b> Name: <\/b> ESTES PARK <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>052759<br>  <b> GHCND ID: <\/b>USC00052759<br> <b> GHCNMLT ID: <\/b>USC00052759<br>  <b> NCDC ID: <\/b>20003853<br>   <b> NWSLI ID: <\/b>EPKC2<br>    <b>Start: <\/b> 1876-01-01 <br> <b> End: <\/b> 2000-07-31 <br> <b> Elevation (m): <\/b> 2279.9 <br> <br>","<b> Name: <\/b> GROSS RESERVOIR <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>053629<br>  <b> GHCND ID: <\/b>USC00053629<br> <b> GHCNMLT ID: <\/b>USC00053629<br>  <b> NCDC ID: <\/b>20003795<br>   <b> NWSLI ID: <\/b>GRRC2<br>    <b>Start: <\/b> 1968-08-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 2429.3 <br> <br>","<b> Name: <\/b> LAKEWOOD <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>054762<br>  <b> GHCND ID: <\/b>USC00054762<br> <b> GHCNMLT ID: <\/b>USC00054762<br>  <b> NCDC ID: <\/b>20003769<br>   <b> NWSLI ID: <\/b>LKWC2<br>    <b>Start: <\/b> 1962-07-28 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1719.1 <br> <br>","<b> Name: <\/b> LONGMONT 2 ESE <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055116<br>  <b> GHCND ID: <\/b>USC00055116<br> <b> GHCNMLT ID: <\/b>USC00055116<br>  <b> NCDC ID: <\/b>20003833<br>   <b> NWSLI ID: <\/b>LONC2<br>    <b>Start: <\/b> 1887-10-01 <br> <b> End: <\/b> 2005-01-01 <br> <b> Elevation (m): <\/b> 1508.8 <br> <br>","<b> Name: <\/b> NEDERLAND 5 NNW <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055881<br>  <b> GHCND ID: <\/b>USC00055881<br>   <b> NCDC ID: <\/b>30000129<br>   <b> NWSLI ID: <\/b>NEDC2<br>    <b>Start: <\/b> 1996-09-09 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 3051 <br> <br>","<b> Name: <\/b> NORTHGLENN <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>055984<br>  <b> GHCND ID: <\/b>USC00055984<br> <b> GHCNMLT ID: <\/b>USC00055984<br>  <b> NCDC ID: <\/b>20003934<br>   <b> NWSLI ID: <\/b>NRTC2<br>    <b>Start: <\/b> 1984-07-18 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1648.1 <br> <br>","<b> Name: <\/b> RALSTON RESERVOIR <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>056816<br>  <b> GHCND ID: <\/b>USC00056816<br> <b> GHCNMLT ID: <\/b>USC00056816<br>  <b> NCDC ID: <\/b>20003778<br>   <b> NWSLI ID: <\/b>GDNC2<br>    <b>Start: <\/b> 1968-08-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1798.3 <br> <br>","<b> Name: <\/b> WATERDALE <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>058839<br>  <b> GHCND ID: <\/b>USC00058839<br> <b> GHCNMLT ID: <\/b>USC00058839<br>  <b> NCDC ID: <\/b>20003863<br>   <b> NWSLI ID: <\/b>WTRC2<br>    <b>Start: <\/b> 1895-01-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1594.1 <br> <br>","<b> Name: <\/b> WHEAT RIDGE 2 <br> <b> Platform: <\/b> COOP <br> <b> COOP ID: <\/b>058995<br>  <b> GHCND ID: <\/b>USC00058995<br> <b> GHCNMLT ID: <\/b>USC00058995<br>  <b> NCDC ID: <\/b>20003768<br>   <b> NWSLI ID: <\/b>WGEC2<br>    <b>Start: <\/b> 1981-02-01 <br> <b> End: <\/b> present <br> <b> Elevation (m): <\/b> 1645.3 <br> <br>"],null,null,null,null]},{"method":"addLegend","args":[{"colors":["blue"],"labels":["COOP"],"na_color":null,"na_label":"NA","opacity":1,"position":"bottomleft","type":"unknown","title":"Nearby Sites","extra":null,"layerId":null,"className":"info legend"}]}],"limits":{"lat":[39.7294,40.4256],"lng":[-105.5461,-104.8361]}},"evals":[],"jsHooks":[]}</script>
-<p>Users can pan, zoom, and click on stations to better visualize the spatial arrangement of stations and/or networks.</p>
+<div id="find-multiple-variables-of-interest-where-sensors-are-co-located" class="section level3">
+<h3>Find multiple variables of interest where sensors are co-located</h3>
+<pre class="r"><code>soilMoisture &lt;- getVars(&quot;soil moisture&quot;)
+snow &lt;- getVars(&quot;snow depth&quot;)
+
+## determine which stations have by finding intersecting station names between the two lists
+colocated &lt;- intersect(names(soilMoisture), names(snow))
+colocated</code></pre>
+<pre><code>##   [1] &quot;SCAN:2221&quot;  &quot;SCAN:2214&quot;  &quot;SCAN:2216&quot;  &quot;SCAN:2213&quot;  &quot;SCAN:2210&quot; 
+##   [6] &quot;SCAN:2211&quot;  &quot;SCAN:2212&quot;  &quot;SCAN:2208&quot;  &quot;SCAN:2209&quot;  &quot;SCAN:1232&quot; 
+##  [11] &quot;SCAN:1233&quot;  &quot;SCAN:1234&quot;  &quot;SCAN:2192&quot;  &quot;SCAN:2170&quot;  &quot;SCAN:2150&quot; 
+##  [16] &quot;SCAN:2145&quot;  &quot;SCAN:2143&quot;  &quot;SCAN:2141&quot;  &quot;SCAN:2146&quot;  &quot;SCAN:2144&quot; 
+##  [21] &quot;SCAN:2142&quot;  &quot;SCAN:2081&quot;  &quot;SCAN:2080&quot;  &quot;SCAN:2065&quot;  &quot;SCAN:2069&quot; 
+##  [26] &quot;SCAN:2050&quot;  &quot;SCAN:2043&quot;  &quot;SCAN:2042&quot;  &quot;SCAN:2041&quot;  &quot;SCAN:2028&quot; 
+##  [31] &quot;SCAN:2002&quot;  &quot;SCAN:750&quot;   &quot;SCAN:808&quot;   &quot;SNTL:1277&quot;  &quot;SNTL:1280&quot; 
+##  [36] &quot;SNTL:1173&quot;  &quot;SNTL:1272&quot;  &quot;SNTL:1278&quot;  &quot;SNTL:1271&quot;  &quot;SNTL:1262&quot; 
+##  [41] &quot;SNTL:1261&quot;  &quot;SNTL:1269&quot;  &quot;SNTL:1266&quot;  &quot;SNTL:1258&quot;  &quot;SNTL:1148&quot; 
+##  [46] &quot;SNTL:1187&quot;  &quot;SNTL:1251&quot;  &quot;SNTL:1254&quot;  &quot;SNTL:1243&quot;  &quot;SNTL:1242&quot; 
+##  [51] &quot;SNTL:1244&quot;  &quot;SNTL:1236&quot;  &quot;SNTL:1249&quot;  &quot;SNTL:1248&quot;  &quot;SNTL:1247&quot; 
+##  [56] &quot;SNTL:1191&quot;  &quot;SNTL:1212&quot;  &quot;SNTL:1185&quot;  &quot;SNTL:1204&quot;  &quot;SNTL:1209&quot; 
+##  [61] &quot;SNTL:1210&quot;  &quot;SNTL:1211&quot;  &quot;SNTL:1207&quot;  &quot;SNTL:1206&quot;  &quot;SNTL:1205&quot; 
+##  [66] &quot;SNTL:1208&quot;  &quot;SNTL:1203&quot;  &quot;SNTL:1202&quot;  &quot;SNTL:1213&quot;  &quot;SNTL:1214&quot; 
+##  [71] &quot;SNTL:1192&quot;  &quot;SNTL:1153&quot;  &quot;SNTL:1221&quot;  &quot;SNTL:1222&quot;  &quot;SNTL:1223&quot; 
+##  [76] &quot;SNTL:1216&quot;  &quot;SNTL:1215&quot;  &quot;SNTL:1224&quot;  &quot;SNTL:1225&quot;  &quot;SNTL:1217&quot; 
+##  [81] &quot;SNTL:1226&quot;  &quot;SNTL:1227&quot;  &quot;SNTL:1228&quot;  &quot;SNTL:1197&quot;  &quot;SNTL:1196&quot; 
+##  [86] &quot;SNTL:1092&quot;  &quot;SNTL:1155&quot;  &quot;SNTL:1152&quot;  &quot;SNTL:1195&quot;  &quot;SNTL:1150&quot; 
+##  [91] &quot;SNTL:1194&quot;  &quot;SNTL:1137&quot;  &quot;SNTL:992&quot;   &quot;SNTL:1162&quot;  &quot;SNTL:1154&quot; 
+##  [96] &quot;SNTL:1163&quot;  &quot;SNTL:1184&quot;  &quot;SNTL:1159&quot;  &quot;SNTL:1144&quot;  &quot;SNTL:1170&quot; 
+## [101] &quot;SNTL:1169&quot;  &quot;SNTL:1168&quot;  &quot;SNTL:1147&quot;  &quot;SNTL:1149&quot;  &quot;SNTL:1151&quot; 
+## [106] &quot;SNTL:1145&quot;  &quot;SNTL:1118&quot;  &quot;SNTL:1146&quot;  &quot;SNTL:1156&quot;  &quot;SNTL:1130&quot; 
+## [111] &quot;SNTL:1134&quot;  &quot;SNTL:1131&quot;  &quot;SNTL:1132&quot;  &quot;SNTL:1140&quot;  &quot;SNTL:1139&quot; 
+## [116] &quot;SNTL:1123&quot;  &quot;SNTL:1141&quot;  &quot;SNTL:1142&quot;  &quot;SNTL:1138&quot;  &quot;SNTL:1136&quot; 
+## [121] &quot;SNTL:1135&quot;  &quot;SNTL:1114&quot;  &quot;SNTL:1115&quot;  &quot;SNTL:1116&quot;  &quot;SNTL:1117&quot; 
+## [126] &quot;SNTL:1113&quot;  &quot;SNTL:1080&quot;  &quot;SNTL:1129&quot;  &quot;SNTL:1119&quot;  &quot;SNTL:1133&quot; 
+## [131] &quot;SNTL:1121&quot;  &quot;SNTL:1125&quot;  &quot;SNTL:1106&quot;  &quot;SNTL:1111&quot;  &quot;SNTL:1112&quot; 
+## [136] &quot;SNTL:1110&quot;  &quot;SNTL:1107&quot;  &quot;SNTL:998&quot;   &quot;SNTL:1099&quot;  &quot;SNTL:1097&quot; 
+## [141] &quot;SNTL:1098&quot;  &quot;SNTL:1085&quot;  &quot;SNTL:1089&quot;  &quot;SNTL:1090&quot;  &quot;SNTL:1081&quot; 
+## [146] &quot;SNTL:1083&quot;  &quot;SNTL:1084&quot;  &quot;SNTL:999&quot;   &quot;SNTL:1082&quot;  &quot;SNTL:1060&quot; 
+## [151] &quot;SNTL:1177&quot;  &quot;SNTL:1055&quot;  &quot;SNTL:1067&quot;  &quot;SNTL:1059&quot;  &quot;SNTL:1053&quot; 
+## [156] &quot;SNTL:1054&quot;  &quot;SNTL:1066&quot;  &quot;SNTL:1065&quot;  &quot;SNTL:1056&quot;  &quot;SNTL:1046&quot; 
+## [161] &quot;SNTL:1047&quot;  &quot;SNTL:1051&quot;  &quot;SNTL:1049&quot;  &quot;SNTL:1050&quot;  &quot;SNTL:1052&quot; 
+## [166] &quot;SNTL:1041&quot;  &quot;SNTL:1042&quot;  &quot;SNTL:1034&quot;  &quot;SNTL:1039&quot;  &quot;SNTL:1011&quot; 
+## [171] &quot;SNTL:1043&quot;  &quot;SNTL:1045&quot;  &quot;SNTL:1030&quot;  &quot;SNTL:1033&quot;  &quot;SNTL:1016&quot; 
+## [176] &quot;SNTL:1017&quot;  &quot;SNTL:1029&quot;  &quot;SNTL:1019&quot;  &quot;SNTL:1018&quot;  &quot;SNTL:1025&quot; 
+## [181] &quot;SNTL:1024&quot;  &quot;SNTL:1013&quot;  &quot;SNTL:990&quot;   &quot;SNTL:1015&quot;  &quot;SNTL:987&quot;  
+## [186] &quot;SNTL:1014&quot;  &quot;SNTL:989&quot;   &quot;SNTL:926&quot;   &quot;SNTL:979&quot;   &quot;SNTL:973&quot;  
+## [191] &quot;SNTL:970&quot;   &quot;SNTL:1006&quot;  &quot;SNTL:1000&quot;  &quot;SNTL:976&quot;   &quot;SNTL:983&quot;  
+## [196] &quot;SNTL:1004&quot;  &quot;SNTL:985&quot;   &quot;SNTL:974&quot;   &quot;SNTL:969&quot;   &quot;SNTL:938&quot;  
+## [201] &quot;SNTL:978&quot;   &quot;SNTL:2029&quot;  &quot;SNTL:972&quot;   &quot;SNTL:971&quot;   &quot;SNTL:942&quot;  
+## [206] &quot;SNTL:960&quot;   &quot;SNTL:935&quot;   &quot;SNTL:940&quot;   &quot;SNTL:937&quot;   &quot;SNTL:939&quot;  
+## [211] &quot;SNTL:931&quot;   &quot;SNTL:944&quot;   &quot;SNTL:962&quot;   &quot;SNTL:921&quot;   &quot;SNTL:922&quot;  
+## [216] &quot;SNTL:914&quot;   &quot;SNTL:958&quot;   &quot;SNTL:906&quot;   &quot;SNTL:903&quot;   &quot;SNTL:1008&quot; 
+## [221] &quot;SNTL:907&quot;   &quot;SNTL:896&quot;   &quot;SNTL:895&quot;   &quot;SNTL:1175&quot;  &quot;SNTL:783&quot;  
+## [226] &quot;SNTL:644&quot;   &quot;SNTL:1037&quot;  &quot;SNTL:387&quot;   &quot;SNTL:1176&quot;  &quot;SNTL:633&quot;  
+## [231] &quot;SNTL:623&quot;   &quot;SNTL:871&quot;   &quot;SNTL:599&quot;   &quot;SNTL:764&quot;   &quot;SNTL:955&quot;  
+## [236] &quot;SNTL:574&quot;   &quot;SNTL:854&quot;   &quot;SNTL:766&quot;   &quot;SNTL:963&quot;   &quot;SNTL:967&quot;  
+## [241] &quot;SNTL:596&quot;   &quot;SNTL:628&quot;   &quot;SNTL:631&quot;   &quot;SNTL:814&quot;   &quot;SNTL:497&quot;  
+## [246] &quot;SNTL:816&quot;   &quot;SNTL:839&quot;   &quot;SNTL:874&quot;   &quot;SNTL:366&quot;   &quot;SNTL:383&quot;  
+## [251] &quot;SNTL:452&quot;   &quot;SNTL:461&quot;   &quot;SNTL:583&quot;   &quot;SNTL:593&quot;   &quot;SNTL:707&quot;  
+## [256] &quot;SNTL:737&quot;   &quot;SNTL:521&quot;   &quot;SNTL:522&quot;   &quot;SNTL:528&quot;   &quot;SNTL:694&quot;  
+## [261] &quot;SNTL:460&quot;   &quot;SNTL:831&quot;   &quot;SNTL:966&quot;   &quot;SNTL:1094&quot;  &quot;SNTL:1002&quot; 
+## [266] &quot;SNTL:425&quot;   &quot;SNTL:340&quot;   &quot;SNTL:443&quot;   &quot;SNTL:734&quot;   &quot;SNTL:957&quot;  
+## [271] &quot;SNTL:466&quot;   &quot;SNTL:735&quot;   &quot;SNTL:747&quot;   &quot;SNTL:454&quot;   &quot;SNTL:947&quot;  
+## [276] &quot;SNTL:948&quot;   &quot;SNTL:1062&quot;  &quot;SNTL:968&quot;   &quot;SNTL:949&quot;   &quot;SNTL:950&quot;  
+## [281] &quot;SNTL:428&quot;   &quot;SNTL:549&quot;   &quot;SNTL:736&quot;   &quot;SNTL:356&quot;   &quot;SNTL:540&quot;  
+## [286] &quot;SNTL:575&quot;   &quot;SNTL:697&quot;   &quot;SNTL:724&quot;   &quot;SNTL:778&quot;   &quot;SNTL:784&quot;  
+## [291] &quot;SNTL:809&quot;   &quot;SNTL:834&quot;   &quot;SNTL:369&quot;   &quot;SNTL:380&quot;   &quot;SNTL:457&quot;  
+## [296] &quot;SNTL:485&quot;   &quot;SNTL:505&quot;   &quot;SNTL:531&quot;   &quot;SNTL:580&quot;   &quot;SNTL:586&quot;  
+## [301] &quot;SNTL:589&quot;   &quot;SNTL:607&quot;   &quot;SNTL:680&quot;   &quot;SNTL:688&quot;   &quot;SNTL:762&quot;  
+## [306] &quot;SNTL:802&quot;   &quot;SNTL:857&quot;   &quot;SNTL:312&quot;   &quot;SNTL:359&quot;   &quot;SNTL:424&quot;  
+## [311] &quot;SNTL:450&quot;   &quot;SNTL:489&quot;   &quot;SNTL:493&quot;   &quot;SNTL:524&quot;   &quot;SNTL:537&quot;  
+## [316] &quot;SNTL:546&quot;   &quot;SNTL:550&quot;   &quot;SNTL:610&quot;   &quot;SNTL:636&quot;   &quot;SNTL:654&quot;  
+## [321] &quot;SNTL:752&quot;   &quot;SNTL:792&quot;   &quot;SNTL:867&quot;   &quot;SNTL:491&quot;   &quot;SNTL:708&quot;  
+## [326] &quot;SNTL:744&quot;   &quot;SNTL:334&quot;   &quot;SNTL:337&quot;   &quot;SNTL:373&quot;   &quot;SNTL:445&quot;  
+## [331] &quot;SNTL:476&quot;   &quot;SNTL:498&quot;   &quot;SNTL:527&quot;   &quot;SNTL:569&quot;   &quot;SNTL:570&quot;  
+## [336] &quot;SNTL:652&quot;   &quot;SNTL:698&quot;   &quot;SNTL:811&quot;   &quot;SNTL:849&quot;   &quot;SNTL:395&quot;  
+## [341] &quot;SNTL:398&quot;   &quot;SNTL:401&quot;   &quot;SNTL:529&quot;   &quot;SNTL:608&quot;   &quot;SNTL:647&quot;  
+## [346] &quot;SNTL:653&quot;   &quot;SNTL:706&quot;   &quot;SNTL:721&quot;   &quot;SNTL:729&quot;   &quot;SNTL:756&quot;  
+## [351] &quot;SNTL:329&quot;   &quot;SNTL:333&quot;   &quot;SNTL:348&quot;   &quot;SNTL:390&quot;   &quot;SNTL:396&quot;  
+## [356] &quot;SNTL:475&quot;   &quot;SNTL:481&quot;   &quot;SNTL:557&quot;   &quot;SNTL:572&quot;   &quot;SNTL:579&quot;  
+## [361] &quot;SNTL:621&quot;   &quot;SNTL:626&quot;   &quot;SNTL:686&quot;   &quot;SNTL:720&quot;   &quot;SNTL:723&quot;  
+## [366] &quot;SNTL:853&quot;   &quot;SNTL:507&quot;   &quot;SNTL:515&quot;   &quot;SNTL:679&quot;   &quot;SNTL:711&quot;  
+## [371] &quot;SNTL:728&quot;   &quot;SNTL:824&quot;   &quot;SNTL:554&quot;   &quot;SNTL:822&quot;   &quot;SNTL:826&quot;  
+## [376] &quot;SNTL:837&quot;   &quot;SNTL:872&quot;   &quot;SNTL:308&quot;   &quot;SNTL:310&quot;   &quot;SNTL:640&quot;  
+## [381] &quot;SNTL:861&quot;   &quot;SNTL:462&quot;   &quot;SNTL:463&quot;   &quot;SNTL:473&quot;   &quot;SNTL:508&quot;  
+## [386] &quot;SNTL:518&quot;   &quot;SNTL:539&quot;   &quot;SNTL:541&quot;   &quot;SNTL:587&quot;   &quot;SNTL:771&quot;  
+## [391] &quot;SNTL:846&quot;   &quot;SNTL:848&quot;   &quot;SNTL:305&quot;   &quot;SNTL:335&quot;   &quot;SNTL:378&quot;  
+## [396] &quot;SNTL:415&quot;   &quot;SNTL:430&quot;   &quot;SNTL:438&quot;   &quot;SNTL:682&quot;   &quot;SNTL:701&quot;  
+## [401] &quot;SNTL:840&quot;   &quot;SNTL:306&quot;   &quot;SNTL:484&quot;   &quot;SNTL:490&quot;   &quot;SNTL:594&quot;  
+## [406] &quot;SNTL:645&quot;   &quot;SNTL:749&quot;   &quot;SNTL:770&quot;   &quot;SNTL:774&quot;   &quot;SNTL:803&quot;  
+## [411] &quot;SNTL:805&quot;   &quot;SNTL:403&quot;   &quot;SNTL:568&quot;   &quot;SNTL:532&quot;   &quot;SNTL:715&quot;  
+## [416] &quot;SNTL:321&quot;   &quot;SNTL:336&quot;   &quot;SNTL:417&quot;   &quot;SNTL:453&quot;   &quot;SNTL:503&quot;  
+## [421] &quot;SNTL:548&quot;   &quot;SNTL:573&quot;   &quot;SNTL:615&quot;   &quot;SNTL:746&quot;   &quot;SNTL:344&quot;  
+## [426] &quot;SNTL:361&quot;   &quot;SNTL:523&quot;   &quot;SNTL:759&quot;   &quot;SNTL:767&quot;   &quot;SNTL:810&quot;  
+## [431] &quot;SNTL:821&quot;   &quot;SNTL:330&quot;   &quot;SNTL:332&quot;   &quot;SNTL:339&quot;   &quot;SNTL:364&quot;  
+## [436] &quot;SNTL:368&quot;   &quot;SNTL:371&quot;   &quot;SNTL:374&quot;   &quot;SNTL:392&quot;   &quot;SNTL:393&quot;  
+## [441] &quot;SNTL:399&quot;   &quot;SNTL:400&quot;   &quot;SNTL:432&quot;   &quot;SNTL:435&quot;   &quot;SNTL:444&quot;  
+## [446] &quot;SNTL:455&quot;   &quot;SNTL:474&quot;   &quot;SNTL:495&quot;   &quot;SNTL:514&quot;   &quot;SNTL:517&quot;  
+## [451] &quot;SNTL:533&quot;   &quot;SNTL:543&quot;   &quot;SNTL:559&quot;   &quot;SNTL:561&quot;   &quot;SNTL:566&quot;  
+## [456] &quot;SNTL:513&quot;   &quot;SNTL:582&quot;   &quot;SNTL:592&quot;   &quot;SNTL:612&quot;   &quot;SNTL:634&quot;  
+## [461] &quot;SNTL:643&quot;   &quot;SNTL:684&quot;   &quot;SNTL:691&quot;   &quot;SNTL:714&quot;   &quot;SNTL:742&quot;  
+## [466] &quot;SNTL:763&quot;   &quot;SNTL:790&quot;   &quot;SNTL:795&quot;   &quot;SNTL:820&quot;   &quot;SNTL:823&quot;  
+## [471] &quot;SNTL:828&quot;   &quot;SNTL:833&quot;   &quot;SNTL:844&quot;   &quot;SNTL:864&quot;   &quot;SNTL:865&quot;  
+## [476] &quot;SNTL:681&quot;   &quot;SNTL:832&quot;   &quot;SNTL:342&quot;   &quot;SNTL:358&quot;   &quot;SNTL:389&quot;  
+## [481] &quot;SNTL:571&quot;   &quot;SNTL:577&quot;   &quot;SNTL:730&quot;   &quot;SNTL:798&quot;   &quot;SNTL:613&quot;  
+## [486] &quot;SNTL:862&quot;   &quot;SNTL:347&quot;   &quot;SNTL:448&quot;   &quot;SNTL:482&quot;   &quot;SNTL:649&quot;  
+## [491] &quot;SNTL:835&quot;   &quot;SNTL:836&quot;   &quot;SNTL:781&quot;   &quot;SNTL:924&quot;   &quot;SNTL:349&quot;  
+## [496] &quot;SNTL:578&quot;   &quot;SNTLT:1235&quot; &quot;SNTLT:1193&quot;</code></pre>
+<pre class="r"><code>## Return the station meta-data 
+oot &lt;- getId(names(colocated[[1]]))</code></pre>
+</div>
 </div>
 <div id="write-station-meta-data-to-an-external-file" class="section level2">
 <h2>Write station meta-data to an external file</h2>
 <p>Since metScanR only returns station meta-data at the moment (functionality for downloading station data directly will be implemented in the future), users may want a ‘hard copy’ .csv of station identifiers to plug into various APIs or websites supported by MET networks:</p>
-<pre class="r"><code>#write.csv(x = scenario1$finalResults, file = &quot;path/to/your/folder/metScanR_output.csv&quot;, na=&quot;&quot;)</code></pre>
+<pre class="r"><code>write.csv(x = scenario1, file = &quot;path/to/your/folder/metScanR_output.csv&quot;, na=&quot;&quot;)</code></pre>
 <p>You must specify a local file path for the output via the <code>file</code> argument.</p>
 </div>
 </div>

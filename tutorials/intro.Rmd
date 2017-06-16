@@ -84,7 +84,6 @@ In the near future, metScanR will provide functionality for  directly downloadin
 install.packages("metScanR")
 ```
 
-
 If you encounter a bug, please provide a reproducible example on this package's [github issues](https://github.com/cflagg/metScanR/issues) page. 
 
 # Getting Started
@@ -105,7 +104,7 @@ In this example we'll do the following:
     * Find data by MET network and environmental variable
 * Navigate metScanR's nested list structure
     * How to pull common values out of all list elements
-    * How to count number of SCAN stations (`r length(getNetwork("SCAN"))`)
+    * How to count number of SCAN stations (`length(getNetwork("SCAN"))`)
 * Explore environmental variables listed in metScanR_DB
 * Practical Use Cases
     * Find Rarely Monitored Variables: `getVars()` "conductivity", turbidity, ground water, gauge height
@@ -138,10 +137,10 @@ Our search can be narrowed to more specific variables of interest via the `vars`
 In this example we search for any variables associated with air temperature measurements:
 
 ```{r}
-scenario2 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45,network="SNOW",vars="air temperature") # returns 15 stations
+scenario2 <- siteFinder(lat=40.05,lon=-105.27,startDate="2000-01-05",radius=45,network="COOP",vars="air temperature", includeUnk = TRUE) # returns 15 stations
 ```
 
-Typing the object name `r scenario2` shows the resulting output, where values such as "TMAX", "TMIN", and "AVGT" are returned (i.e. variables associated with air temperature measurements). Note that an error message is the resulting output if none of the stations within the search  have variables that match the `vars` argument. 
+Typing the object name `cenario2` shows the resulting output, where values such as "TMAX", "TMIN", and "AVGT" are returned (i.e. variables associated with air temperature measurements). Note that an error message is the resulting output if none of the stations within the search  have variables that match the `vars` argument. 
 
 ### Visualize metScanR function output 
 
