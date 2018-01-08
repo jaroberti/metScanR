@@ -19,6 +19,9 @@ mp <- barplot(sort(table(identifiers),decreasing = T),axes = FALSE, axisnames = 
 text(mp, par("usr")[3], labels = labels, srt = 45, adj = c(1.1,1.1), xpd = TRUE, cex=1)
 axis(2)
 
+#oldest station:
+oldestStation<-metScanR::getDates(endDate = "1800-01-01")
+
 
 #start here
 metScanR::mapSiteFinder(metScanR::getNearby(lat=34.0259, lon =-118.7798,radius=500))
