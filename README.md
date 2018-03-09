@@ -1,7 +1,9 @@
 # metScanR
 
+
 [![](http://cranlogs.r-pkg.org/badges/metScanR)](https://cran.rstudio.com/web/packages/metScanR/index.html) 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/metScanR)](http://cran.r-project.org/package=metScanR)
+
 
 ## Summary 
 
@@ -42,11 +44,11 @@ Install official releases from CRAN with
 ```
 install.packages("metScanR")
 ```
-If you encounter a bug, please provide a reproducible example on this package's [github issues](https://github.com/cflagg/metScanR/issues) page. 
+If you encounter a bug, please provide a reproducible example on this package's [github issues](https://github.com/jaroberti/metScanR/issues) page. 
 
 ### Tutorial:
 
-A tutorial is provided at: https://cflagg.github.io/metScanR/tutorials/intro.html
+A tutorial is provided at: https://jaroberti.github.io/metScanR/tutorials/intro.html
 
 ### The metScanR Database: <a id="refDatabase"></a>
 
@@ -72,5 +74,5 @@ We're hoping to enable metScanR with functionality for directly downloading mete
 ### Citation:
 Josh Roberti, Cody Flagg, Lee Stanish and Robert Lee (2017). metScanR: Find, Map, and
   Gather Environmental Data and Metadata. R package version 1.1.1.
-  https://cflagg.github.io/metScanR/
+  https://github.com/jaroberti/metScanR
 
