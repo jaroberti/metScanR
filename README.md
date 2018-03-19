@@ -1,5 +1,7 @@
 # metScanR
 
+[![](http://cranlogs.r-pkg.org/badges/metScanR)](https://cran.rstudio.com/web/packages/metScanR/index.html) 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/metScanR)](http://cran.r-project.org/package=metScanR)
 
 
 **UPDATE 2018-03-19:** The *metScanR* package now includes a small (subset) database when initially downloaded.  To get the full benefits of *metScanR*, the end-user is encouraged to run the newly added `updateDatabase()` function within *metScanR* to ensure that the full and most up-to-date *metScanR database* is installed on their local computers.  
