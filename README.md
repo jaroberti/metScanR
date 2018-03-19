@@ -43,7 +43,11 @@ use of any of the above functions will return an R `list()` object detailing of 
 
 **Mapping Function**
 
-*metScanR* also empowers users to explore data by providing an interactive map of all returned MET stations (powered by Leaflet). This is accomplished through *metScanR's* `mapSiteFinder()` function.
+The *metScanR* package also comes with a function (`mapSiteFinder()`) that displays stations from a user-defined search (Figure 3).  The map is interactive (when run in R; below is just a screenshot) and users can click on stations for more information and/or toggle different areas by zooming in/out etc. This is an aesthetic, ancillary feature to compliment the many search functions available within the package.
+
+![](AMS2018/exampleMap.png "Figure 3: metScanR's mapSiteFinder() function.")
+
+**FIGURE 3:** Screenshot example of metScanR's mapSiteFinder() function.  
 
 ### Getting Started:
 
@@ -83,23 +87,17 @@ The current version of the *metScanR DB* is *v2.2.0* and currently contains meta
 * **v2.2.0** *2017-11-05* Minor release. Identified 498 stations as duplicate entries, removed from DB.  DB now contains 107,126 worldwide stations.  Attributes (above comment) added to DB.  Will use these as checks to ensure user has most up-to-date version installed
 
 ###Novelty of *metScanR*:
-Because meteorological/environmental networks are managed by different governing bodies, an abundance of discrepancies exist within station metadata.  A single station may be part of many networks, can have many associated identifiers, and may have similar data product-types (i.e., variables monitored) stored among many repositories which are available at different temporal resolutions.  As such, a user may find a station of interest, and depending on the station identifier that they user, may be routed to a repository that contains only a fraction of the available station inforation (see Figure 3). This results in a  "discrepancy gap" of data avaiability among the thousands of meteorological/environmental stations, worldwide.  The *metScanR* package attempts to bridge the 'discrepancy gap.' This is acheived by organizing all information into a standardized and single database, i.e., the *metScanR database*.  
+Because meteorological/environmental networks are managed by different governing bodies, an abundance of discrepancies exist within station metadata.  A single station may be part of many networks, can have many associated identifiers, and may have similar data product-types (i.e., variables monitored) stored among many repositories which are available at different temporal resolutions.  As such, a user may find a station of interest, and depending on the station identifier that they user, may be routed to a repository that contains only a fraction of the available station inforation (see Figure 4). This results in a  "discrepancy gap" of data avaiability among the thousands of meteorological/environmental stations, worldwide.  The *metScanR* package attempts to bridge the 'discrepancy gap.' This is acheived by organizing all information into a standardized and single database, i.e., the *metScanR database*.  
 
 
-![](AMS2018/idTraceability.png "Figure 3: station ID traceability.")
-**FIGURE 3:** An example of metadata discrepancies for a single station: 'Downtown Charleston' in Charleston, SC, USA.  This station has many associated identifiers which route to repositories managed by different governing bodies with varying metadata standards. 
+![](AMS2018/idTraceability.png "Figure 4: station ID traceability.")
+**FIGURE 4:** An example of metadata discrepancies for a single station: 'Downtown Charleston' in Charleston, SC, USA.  This station has many associated identifiers which route to repositories managed by different governing bodies with varying metadata standards. 
 
-This gap extends also to measured variables (e.g., air temperature, soil moisture, snow depth, etc.) among networks. To alleviate this discrepancy and make elemets traceable to one another, elements within the *metScanR database* are structured using a hierarchical n-gram structure that links common terms to network-specific element codes.  This accounts for nomenclature discrepancies and allows users to search for a variety of like-elements in one search, a novel approach for structuing and storing meteorological/environmental metadata (Figure 4).  
+This gap extends also to measured variables (e.g., air temperature, soil moisture, snow depth, etc.) among networks. To alleviate this discrepancy and make elemets traceable to one another, elements within the *metScanR database* are structured using a hierarchical n-gram structure that links common terms to network-specific element codes.  This accounts for nomenclature discrepancies and allows users to search for a variety of like-elements in one search, a novel approach for structuing and storing meteorological/environmental metadata (Figure 5).  
 
-![](AMS2018/n-grams.png "Figure 4: Element traceability via n-grams.")
-**FIGURE 4:** Linking the many network-specific variable abbreviations to common terms.  
+![](AMS2018/n-grams.png "Figure 5: Element traceability via n-grams.")
+**FIGURE 5:** Linking the many network-specific variable abbreviations to common terms.  
 
-
-The *metScanR* package also comes with a function (`mapSiteFinder()`) that displays stations from a user-defined search (Figure 5).  The map is interactive (when run in R; below is just a screenshot) and users can click on stations for more information and/or toggle different areas by zooming in/out etc. This is an aesthetic, ancillary feature to compliment the many search functions available within the package.
-
-![](AMS2018/exampleMap.png "Figure 5: metScanR's mapSiteFinder() function.")
-
-**FIGURE 5:** Screenshot example of metScanR's mapSiteFinder() function.  
 
 
 ### Future Directions:
