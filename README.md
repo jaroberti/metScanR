@@ -49,7 +49,11 @@ use of any of the above functions will return an R `list()` object detailing of 
 Install official releases from CRAN with 
 
 ```
+#install metScanR:
 install.packages("metScanR")
+#download and save the most up-to-date database:
+updateDatabase()
+
 ```
 If you encounter a bug, please provide a reproducible example on this package's [github issues](https://github.com/jaroberti/metScanR/issues) page. 
 
