@@ -94,6 +94,7 @@ The current version of the *metScanR DB* is *v2.2.0* and currently contains meta
 * **v2.2.0** *2017-11-05* Minor release. Identified 498 stations as duplicate entries, removed from DB.  DB now contains 107,126 worldwide stations.  Attributes (above comment) added to DB.  Will use these as checks to ensure user has most up-to-date version installed
 
 
+
 ###Novelty of *metScanR*:
 Because meteorological/environmental networks are managed by different governing bodies, an abundance of discrepancies exist within station metadata.  A single station may be part of many networks, can have many associated identifiers, and may have similar data product-types (i.e., variables monitored) stored among many repositories which are available at different temporal resolutions.  As such, a user may find a station of interest, and depending on the station identifier that they use, may be routed to a repository that contains only a fraction of the available station inforation (see Figure 5). This results in a  "discrepancy gap" of data avaiability among the thousands of meteorological/environmental stations, worldwide.  The *metScanR* package attempts to bridge the 'discrepancy gap.' This is acheived by organizing all information into a standardized and single database, i.e., the *metScanR database*.  
 
