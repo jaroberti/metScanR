@@ -4,6 +4,8 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/metScanR)](http://cran.r-project.org/package=metScanR)
 
 
+**UPDATE 2018-08-27:** Over 50,000 mesonet stations added to the *metScanR database*.  The *metScanR database* now has 157,655 meteorological/environmental stations!
+
 **UPDATE 2018-03-19:** The *metScanR* package now includes a small (subset) database when initially downloaded.  To get the full benefits of *metScanR*, the end-user is encouraged to run the newly added `updateDatabase()` function within *metScanR* to ensure that the full and most up-to-date *metScanR database* is installed on their local computer.  
 
 
@@ -71,14 +73,16 @@ If you encounter a bug, please provide a reproducible example on this package's 
 
 ### Tutorial:
 
-A tutorial is provided at: https://jaroberti.github.io/metScanR/tutorials/intro.html
+A tutorial is provided at: https://jaroberti.github.io/metScanR/tutorials/intro.html. 
+
+**Update (2018-09-21)** : Please note, the tutorial is a bit out of date.  We're hoping to update the tutorial in the near future. 
 
 ### CRAN PDF: 
 https://cran.r-project.org/web/packages/metScanR/metScanR.pdf
 
 ### The metScanR Database: <a id="refDatabase"></a>
 
-The current version of the *metScanR DB* is *v2.2.0* and currently contains metadata from **107,126 stations**, worldwide. The DB is updated frequently and hosted externally of the *metScanR* package.  Upon loading the *metScanR* package via `library(metScanR)`, the DB is accessed via internet connection and installed locally to the user's computer.  The provenance of the DB is detailed below:
+The current version of the *metScanR DB* is *v2.3.0* and currently contains metadata from **157,655 stations**, worldwide. The DB is updated frequently and hosted externally of the *metScanR* package.  Upon loading the *metScanR* package via `library(metScanR)`, the DB is accessed via internet connection and installed locally to the user's computer.  The provenance of the DB is detailed below:
 
 * **v1.0.0**  *2017-01-18* Initial release.  Database was in dataframe format and hosted with the R package.  Database comprised ~13,000 sites from the US and parts of Canada.
 * **v2.0.0** *2017-05-18* Major release.  Database converted to list format with content (below). Database contains 106,933 stations from around the world and is hosted externally and independent from the *metScanR* package.  The new list format now includes:
@@ -91,7 +95,9 @@ The current version of the *metScanR DB* is *v2.2.0* and currently contains meta
 
 * **v2.1.0** *2017-07-03* Minor release. NADP and Ameriflux networks added to DB. Database contains 107,624 stations, worldwide.
 
-* **v2.2.0** *2017-11-05* Minor release. Identified 498 stations as duplicate entries, removed from DB.  DB now contains 107,126 worldwide stations.  Attributes (above comment) added to DB.  Will use these as checks to ensure user has most up-to-date version installed  
+* **v2.2.0** *2017-11-05* Minor release. Identified 498 stations as duplicate entries, removed from DB.  DB now contains 107,126 worldwide stations.  Attributes (above comment) added to DB.  Will use these as checks to ensure user has most up-to-date version installed
+
+* **v2.3.0** *2018-08-27* Minor release.  Over 50,000 mesonet stations added to DB.  Database now contains 157,655 stations, worldwide.  
 
 
 ### Novelty of *metScanR*:
@@ -135,3 +141,7 @@ citation("metScanR")
 
 ### Presentations:
 [Click here](https://ams.confex.com/ams/98Annual/videogateway.cgi/id/44605?recordingid=44605&uniqueid=Paper336096&entry_password=164273) to check out our presentation from the American Meteorological Society's (AMS) Annual Meeting (2018-01-10) in Austin, TX.
+
+
+### Contact:
+If you have any questions, comments, concerns, or if you'd like to see a specific network added to the metScanR database, please email Josh (jaroberti87@gmail.com).
