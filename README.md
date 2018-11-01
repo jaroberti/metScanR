@@ -66,6 +66,7 @@ Install official releases from CRAN with
 #install metScanR:
 install.packages("metScanR")
 #download and save the most up-to-date database:
+library(metScanR)
 updateDatabase()
 
 ```
