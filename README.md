@@ -13,12 +13,14 @@ Every day thousands of meteorological and environmental data are collected throu
 
 Inconsistent metadata, documentation, data formats, station names, and station identifiers pose major roadblocks to finding, cleaning, and organizing (collectively known as 'wrangling') meteorological and environmental data among different networks.  This concept is not new.  In fact, many studies have estimated that data 'wrangling' accounts for roughly 80% of data science, allowing data scientists only 20% of their time to actually analyze the data ([Forbes (2016)](https://www.forbes.com/sites/gilpress/2016/03/23/data-preparation-most-time-consuming-least-enjoyable-data-science-task-survey-says/); [IBM (2017)](https://www.ibm.com/blogs/bluemix/2017/08/ibm-data-catalog-data-scientists-productivity/)).  
 
+### Mitigating the 80/20 Dilemma:
+
 We are pleased to introduce *metScanR*, an R package that enables users to quickly locate freely available meteorological and environmental data across multiple networks, worldwide. The *metScanR* package utilizes a continuously growing database (see the [*metScanR database (DB)*](#refDatabase) section below), that currently contains metadata for **157,676** stations from **219** countries/territories, worldwide (Fig 2). 
 
 ![metScanR](AMS2018/allSites20190130.png "Figure 2: All Stations within the metScanR database.")
 <sup>**FIGURE 2**: Plot of all stations within the metScanR database.  Each station is represented by a dot. Station locations are the only items plotted here - no geographical or political boundaries are mapped.  This reveals interesting patterns about environmental station placement, e.g., northern Canada, India, central Australia, etc.  Below, a barplot details the number of stations per country.  Please note that only the top 20 countries in terms of number of environmental stations are shown.</sup>
 
-![](AMS2018/sitesPerCountry20190130.png "Figure 3: Barplot of top 20 countries with the most environmental monitoring stations.")
+![](AMS2018/sitesPerCountry20190130.png "Figure 3: Barplot of top 10 countries with the most environmental monitoring stations.")
 <sup>**FIGURE 3**: Barplot of top 20 countries with the most environmental monitoring stations.</sup>
 
 *metScanR* allows a user to search for stations and metadata in a variety of ways via the R functions within the package.  Below is a list of *metScanR* functions and their use.
