@@ -1,28 +1,25 @@
 # metScanR
+### Mitigating the "80/20 Data Scientist Dilemma"
 
 [![](http://cranlogs.r-pkg.org/badges/metScanR)](https://cran.rstudio.com/web/packages/metScanR/index.html) 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/metScanR)](http://cran.r-project.org/package=metScanR)
 
-
-**UPDATE 2018-08-27:** Over 50,000 mesonet stations added to the *metScanR database*.  The *metScanR database* now has 157,655 meteorological/environmental stations!
-
-**UPDATE 2018-03-19:** The *metScanR* package now includes a small (subset) database when initially downloaded.  To get the full benefits of *metScanR*, the end-user is encouraged to run the newly added `updateDatabase()` function within *metScanR* to ensure that the full and most up-to-date *metScanR database* is installed on their local computer.  
-
-
 ## Summary 
 
-Thousands of meteorological and environmental stations collect data everyday throughout the world. Collectively, these stations are part of hundreds of large-, medium-, and small-scale networks from around the globe.  Some stations are part of multiple networks, have well documented metadata, and their data can be accessed through a handfull of public databases.  Other stations however, have poorly documented metadata and their data are harder to locate and access, which can make it difficult to answer specific scientific questions (Fig 1). 
+Every day thousands of meteorological and environmental data streams are collected throughout the world. The stations that collect these data are part of many large-, medium-, and small-scale networks throughout the globe.  Some stations are part of multiple networks, have well documented metadata, and their data can be accessed through a handfull of public databases.  Other stations however, have poorly documented metadata and their data are harder to locate and access. The latter makes it difficult and time consuming to answer specific scientific questions (Fig 1). 
 
 ![](AMS2018/findingMetadata.png "Figure 1: Breakdown of common metadata availability ")
 <sup>**FIGURE 1** Some metadata are easy to find in many repositories (green box), while other types of metadata are hard to track down (orange box).  This can make searching for environmental monitoring stations of interest painstakingly slow especially if searching for specific criteria.</sup>
 
 
-As a result, varying metadata, documentation, data formats, station names and even inconsistent station identifiers can pose a major roadblock to finding, wrangling, and synthesizing meteorological and environmental data among different networks.  Here, we introduce *metScanR*, an R package that enables users to quickly locate freely available meteorological and environmental data across multiple networks, worldwide. The *metScanR* package utilizes a continuously growing database (see the [*metScanR database (DB)*](#refDatabase) section below), that contains metadata for **>100,000** stations from **219** countries/territories, worldwide (Fig 2). 
+Inconsistent metadata, documentation, data formats, station names, and station identifiers pose major roadblocks to finding, cleaning, and organizing (collectively known as 'wrangling') meteorological and environmental data among different networks.  This concept is not new.  In fact, many studies have estimated that data 'wrangling' accounts for roughly 80% of data science, allowing data scientists only 20% of their time to actually analyze the data ([Forbes (2016)](https://www.forbes.com/sites/gilpress/2016/03/23/data-preparation-most-time-consuming-least-enjoyable-data-science-task-survey-says/); [IBM (2017)](https://www.ibm.com/blogs/bluemix/2017/08/ibm-data-catalog-data-scientists-productivity/)).  
 
-![metScanR](AMS2018/allStations.png "Figure 2: All Stations within the metScanR database.")
+We are pleased to introduce *metScanR*, an R package that enables users to quickly locate freely available meteorological and environmental data across multiple networks, worldwide. The *metScanR* package utilizes a continuously growing database (see the [*metScanR database (DB)*](#refDatabase) section below), that currently contains metadata for **157,676** stations from **219** countries/territories, worldwide (Fig 2). 
+
+![metScanR](AMS2018/allSites20190130.png "Figure 2: All Stations within the metScanR database.")
 <sup>**FIGURE 2**: Plot of all stations within the metScanR database.  Each station is represented by a dot. Station locations are the only items plotted here - no geographical or political boundaries are mapped.  This reveals interesting patterns about environmental station placement, e.g., northern Canada, India, central Australia, etc.  Below, a barplot details the number of stations per country.  Please note that only the top 20 countries in terms of number of environmental stations are shown.</sup>
 
-![](AMS2018/stationsByCountry.png "Figure 3: Barplot of top 20 countries with the most environmental monitoring stations.")
+![](AMS2018/sitesPerCountry20190130.png "Figure 3: Barplot of top 20 countries with the most environmental monitoring stations.")
 <sup>**FIGURE 3**: Barplot of top 20 countries with the most environmental monitoring stations.</sup>
 
 *metScanR* allows a user to search for stations and metadata in a variety of ways via the R functions within the package.  Below is a list of *metScanR* functions and their use.
@@ -99,7 +96,7 @@ The current version of the *metScanR DB* is *v2.3.0* and currently contains meta
 * **v2.2.0** *2017-11-05* Minor release. Identified 498 stations as duplicate entries, removed from DB.  DB now contains 107,126 worldwide stations.  Attributes (above comment) added to DB.  Will use these as checks to ensure user has most up-to-date version installed
 
 * **v2.3.0** *2018-08-27* Minor release.  Over 50,000 mesonet stations added to DB.  Database now contains 157,655 stations, worldwide.  
-
+* **v2.4.0** *2019-01-29* Minor release.  Mapped mesonet variables to metScanR's terms and traceability data frames.  Added units to many variables.  Added remaining NEON sites, data products and sub terms to database.
 
 ### Novelty of *metScanR*:
 Because meteorological/environmental networks are managed by different governing bodies, an abundance of discrepancies exist within station metadata.  A single station may be part of many networks, can have many associated identifiers, and may have similar data product-types (i.e., variables monitored) stored among many repositories which are available at different temporal resolutions.  As such, a user may find a station of interest, and depending on the station identifier that they use, may be routed to a repository that contains only a fraction of the available station inforation (see Figure 5). This results in a  "discrepancy gap" of data avaiability among the thousands of meteorological/environmental stations, worldwide.  The *metScanR* package attempts to bridge the 'discrepancy gap.' This is acheived by organizing all information into a standardized and single database, i.e., the *metScanR database*.  
