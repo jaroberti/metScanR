@@ -79,7 +79,7 @@ https://cran.r-project.org/web/packages/metScanR/metScanR.pdf
 
 ### The metScanR Database: <a id="refDatabase"></a>
 
-The current version of the *metScanR DB* is *v2.3.0* and currently contains metadata from **157,655 stations**, worldwide. The DB is updated frequently and hosted externally of the *metScanR* package.  Upon loading the *metScanR* package via `library(metScanR)`, the DB is accessed via internet connection and installed locally to the user's computer.  The provenance of the DB is detailed below:
+The current version of the *metScanR DB* is *v2.4.0* and currently contains metadata from **157,676 stations**, worldwide. The DB is updated frequently and hosted externally of the *metScanR* package.  Upon loading the *metScanR* package via `library(metScanR)`, the DB is accessed via internet connection and installed locally to the user's computer.  The provenance of the DB is detailed below:
 
 * **v1.0.0**  *2017-01-18* Initial release.  Database was in dataframe format and hosted with the R package.  Database comprised ~13,000 sites from the US and parts of Canada.
 * **v2.0.0** *2017-05-18* Major release.  Database converted to list format with content (below). Database contains 106,933 stations from around the world and is hosted externally and independent from the *metScanR* package.  The new list format now includes:
