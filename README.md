@@ -1,12 +1,11 @@
-# metScanR
-### Mitigating the "80/20 Data Scientist Dilemma"
-
+# metScanR - Mitigating the "80/20 Data Scientist Dilemma" 
 [![](http://cranlogs.r-pkg.org/badges/metScanR)](https://cran.rstudio.com/web/packages/metScanR/index.html) 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/metScanR)](http://cran.r-project.org/package=metScanR)
 
+
 ## Summary 
 
-Every day thousands of meteorological and environmental data streams are collected throughout the world. The stations that collect these data are part of many large-, medium-, and small-scale networks throughout the globe.  Some stations are part of multiple networks, have well documented metadata, and their data can be accessed through a handfull of public databases.  Other stations however, have poorly documented metadata and their data are harder to locate and access. The latter makes it difficult and time consuming to answer specific scientific questions (Fig 1). 
+Every day thousands of meteorological and environmental data are collected throughout the world. The stations that collect these data are part of many large-, medium-, and small-scale networks throughout the globe.  Some stations are part of multiple networks, have well documented metadata, and their data can be accessed through a handfull of public databases.  Other stations however, have poorly documented metadata and their data are harder to locate and access. The latter makes it difficult and time consuming to answer specific scientific questions (Fig 1). 
 
 ![](AMS2018/findingMetadata.png "Figure 1: Breakdown of common metadata availability ")
 <sup>**FIGURE 1** Some metadata are easy to find in many repositories (green box), while other types of metadata are hard to track down (orange box).  This can make searching for environmental monitoring stations of interest painstakingly slow especially if searching for specific criteria.</sup>
@@ -39,7 +38,7 @@ These functions allow the end-user to filter environmental stations by:
 * Specific US state or territory - `getTerritory()` 
 * Hybrid search (all of the above) - `siteFinder()`
 
-Use of any of the above functions will return an R `list()` object detailing of all weather/environmental stations that meet the search criteria.  Metadata of each station is structured in a standardized format (below) and is returned to the end-user when using the above search functions:
+Use of any of the above functions will return an R `list()` object detailing of all meteorological/environmental stations that meet the search criteria.  Metadata of each station are structured in a standardized format (below) and are returned to the end-user when using the above search functions:
 
 * *$namez* [chr] - Name of the station 
 * *$identifiers* [data.frame] - Station identifiers, including idType (i.e., the governing body that supplies the station ID such as the World Meteorological Organization) and the associated *id* 
