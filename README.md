@@ -1,4 +1,5 @@
-# metScanR - Mitigating the "80/20 Data Science Dilemma" 
+# metScanR 
+## Mitigating the "80/20 Data Science Dilemma" in atmospheric / environmental sciences
 [![](http://cranlogs.r-pkg.org/badges/metScanR)](https://cran.rstudio.com/web/packages/metScanR/index.html) 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/metScanR)](http://cran.r-project.org/package=metScanR)
 
@@ -18,10 +19,7 @@ Inconsistent metadata, documentation, data formats, station names, and station i
 We are pleased to introduce *metScanR*, an R package that enables users to quickly locate freely available meteorological and environmental data across multiple networks, worldwide. The *metScanR* package utilizes a continuously growing database (see the [*metScanR database (DB)*](#refDatabase) section below), that currently contains metadata for **157,676** stations from **219** countries/territories, worldwide (Fig 2). 
 
 ![metScanR](AMS2018/allSites20190130.png "Figure 2: All Stations within the metScanR database.")
-<sup>**FIGURE 2**: Plot of all stations within the metScanR database.  Each station is represented by a dot. Station locations are the only items plotted here - no geographical or political boundaries are mapped.  This reveals interesting patterns about environmental station placement, e.g., northern Canada, India, central Australia, etc.  Below, a barplot details the number of stations per country.  Please note that only the top 20 countries in terms of number of environmental stations are shown.</sup>
-
-![](AMS2018/sitesPerCountry20190130.png "Figure 3: Barplot of top 10 countries with the most environmental monitoring stations.")
-<sup>**FIGURE 3**: Barplot of top 20 countries with the most environmental monitoring stations.</sup>
+<sup>**FIGURE 2**: Plot of all stations within the metScanR database.  Each station is represented by a dot. Station locations are the only items plotted here - no geographical or political boundaries are mapped.  This reveals interesting patterns about environmental station placement, e.g., northern Canada, India, central Australia, etc.</sup>
 
 *metScanR* allows a user to search for stations and metadata in a variety of ways via the R functions within the package.  Below is a list of *metScanR* functions and their use.
 
@@ -48,40 +46,23 @@ Use of any of the above functions will return an R `list()` object detailing of 
 * *elements* [data.frame] - The meteorological/environmental variables measured at the station, includes the start and end dates of active sampling for each variable (if available)
 * *location* [data.frame] - Geolocation information, inlcuding lat/lon, elevation, country, etc., for the site 
 
+![](AMS2018/listOutput.png "Figure 3: Example list output from metScanR search.")
+
+<sup>**FIGURE 3**: Exemplar output of metScanR's `getStation()` search function for the NRCS SCAN site 2172.  Output from all of metScanR's search functions are structured in this manner.</sup>
+
+
 **Mapping Function**
 
-The *metScanR* package also comes with a function (`mapSiteFinder()`) that displays stations from a user-defined search (Figure 4).  The map is interactive (when run in R; below is just a screenshot) and users can click on stations for more information and/or toggle different areas by zooming in/out etc. This is an aesthetic, ancillary feature to compliment the many search functions available within the package.
+The *metScanR* package also comes with a function (`mapSiteFinder()`) that displays stations from a user-defined search (Figure 4).  When run in R the map is interactive and users can click on stations for more information and/or toggle different areas by zooming in/out etc. This is an aesthetic, ancillary feature to compliment the many search functions available within the package.
 
-![](AMS2018/exampleMap.png "Figure 4: metScanR's mapSiteFinder() function.")
+![](AMS2018/fig4_2019_02_01.png "Figure 4: metScanR's mapSiteFinder() function.")
 
-<sup>**FIGURE 4:** Screenshot example of metScanR's mapSiteFinder() function.</sup> 
+<sup>**FIGURE 4:** Screenshot example of metScanR's `mapSiteFinder()` and `getNearby()` functions.  A total of 803 stations are within 50 km of NEON's NIWO station.  Total run time = 9.2 seconds.</sup> 
 
-### Getting Started:
-
-Install official releases from CRAN with 
-
-```
-#install metScanR:
-install.packages("metScanR")
-#download and save the most up-to-date database:
-library(metScanR)
-updateDatabase()
-
-```
-If you encounter a bug, please provide a reproducible example on this package's [github issues](https://github.com/jaroberti/metScanR/issues) page. 
-
-### Tutorial:
-
-A tutorial is provided at: https://jaroberti.github.io/metScanR/tutorials/intro.html. 
-
-**Update (2018-09-21)** : Please note, the tutorial is a bit out of date.  We're hoping to update the tutorial in the near future. 
-
-### CRAN PDF: 
-https://cran.r-project.org/web/packages/metScanR/metScanR.pdf
 
 ### The metScanR Database: <a id="refDatabase"></a>
 
-The current version of the *metScanR DB* is *v2.4.0* and currently contains metadata from **157,676 stations**, worldwide. The DB is updated frequently and hosted externally of the *metScanR* package.  Upon loading the *metScanR* package via `library(metScanR)`, the DB is accessed via internet connection and installed locally to the user's computer.  The provenance of the DB is detailed below:
+The current version of the *metScanR DB* is *v2.4.0* and currently contains metadata from **157,676 stations**, worldwide. The DB is updated frequently and hosted externally of the *metScanR* package.  Upon loading the *metScanR* package via `library(metScanR)`, the DB is accessed via internet connection and installed locally to the user's computer via metScanR's `updateDatabase()` function.  The provenance of the DB is detailed below:
 
 * **v1.0.0**  *2017-01-18* Initial release.  Database was in dataframe format and hosted with the R package.  Database comprised ~13,000 sites from the US and parts of Canada.
 * **v2.0.0** *2017-05-18* Major release.  Database converted to list format with content (below). Database contains 106,933 stations from around the world and is hosted externally and independent from the *metScanR* package.  The new list format now includes:
@@ -100,17 +81,53 @@ The current version of the *metScanR DB* is *v2.4.0* and currently contains meta
 * **v2.4.0** *2019-01-29* Minor release.  Mapped mesonet variables to metScanR's terms and traceability data frames.  Added units to many variables.  Added remaining NEON sites, data products and sub terms to database.
 
 ### Novelty of *metScanR*:
-Because meteorological/environmental networks are managed by different governing bodies, an abundance of discrepancies exist within station metadata.  A single station may be part of many networks, can have many associated identifiers, and may have similar data product-types (i.e., variables monitored) stored among many repositories which are available at different temporal resolutions.  As such, a user may find a station of interest, and depending on the station identifier that they use, may be routed to a repository that contains only a fraction of the available station inforation (see Figure 5). This results in a  "discrepancy gap" of data avaiability among the thousands of meteorological/environmental stations, worldwide.  The *metScanR* package attempts to bridge the 'discrepancy gap.' This is acheived by organizing all information into a standardized and single database, i.e., the *metScanR database*.  
+Because meteorological/environmental networks are managed by different governing bodies, an abundance of discrepancies exist within station metadata.  A single station may be part of many networks, can have many associated identifiers, and may have similar data product-types (i.e., variables monitored) stored among many repositories.  Additionally, the same data product may be available at different temporal resolutions among the repositories.  
+
+A user may find themselves searching for a station of interest and depending on the station identifier that they use, may be routed to a repository that contains only a fraction of the available station inforation (see Figure 5). This results in a  "discrepancy gap" of data avaiability among the thousands of meteorological/environmental stations, worldwide.  The *metScanR* package bridges this  'discrepancy gap.' by organizing all metadata into a standardized database, i.e., the *metScanR database*.  
 
 
 ![](AMS2018/idTraceability.png "Figure 5: station ID traceability.")
 <sup>**FIGURE 5:** An example of metadata discrepancies for a single station: 'Downtown Charleston' in Charleston, SC, USA.  This station has many associated identifiers which route to repositories managed by different governing bodies with varying metadata standards.</sup> 
 
-This gap extends also to measured variables (e.g., air temperature, soil moisture, snow depth, etc.) among networks. To alleviate this discrepancy and make elemets traceable to one another, elements within the *metScanR database* are structured using a hierarchical n-gram structure that links common terms to network-specific element codes.  This accounts for nomenclature discrepancies and allows users to search for a variety of like-elements in one search, a novel approach for structuing and storing meteorological/environmental metadata (Figure 5).  
+This gap extends to the manner in which measured variables (e.g., air temperature, soil moisture, snow depth, etc.) are abbreviated and reported among networks. Some networks use full term names to document their data products, while others use abbreviations or discrete alpha-numeric identifiers.  For instance, "air temperature" is denoted as, "air temperature", "TEMP", "TAVG, "temp_avg", "NEON.DP1.00002." etc. among networks; *many terms are used to denote the same atmospheric phenomenon*.  To alleviate this discrepancy and make elemets traceable to one another, elements within the *metScanR database* are structured using a hierarchical n-gram framework that links common terms to network-specific element codes.  This accounts for nomenclature discrepancies and allows users to search for a variety of like-elements in one search, a novel approach for structuing and storing meteorological/environmental metadata (Figure 5).  
 
 ![](AMS2018/n-grams.png "Figure 6: Element traceability via n-grams.")
 <sup>**FIGURE 6:** Linking the many network-specific variable abbreviations to common terms.</sup>  
 
+The standardized databases, n-gram traceability, search features, mapping feature, and ease of use make metScanR a novel tool.  Collectively, these features allow users to greatly reduce the time-sink of *finding* atmospheric and environmental data.  
+
+**A quick Example**
+A user wishes to search for environmental / meteorological stations nearby a known point of interest (POI).  Using metScanR's `getNearby()` function this can be done in a matter of seconds.  As an example, let's use the search from Figure 4; it took 9.2 seconds to search for and map the 803 stations nearby NEON's NIWO station.  That's a lot of stations among many networks.  But let's say that the researcher wants to find data from nearby sites that has a similar elevation to NEON's NIWO site (3513 m ASL) and also measures snow depth. No problem.  Using the `siteFinder()` function, the user can filter the dataset more specifically to their needs (Figure 7).
+
+![](AMS2018/fig7_2019_02_01.png "Figure 7: Filtered user search.")
+<sup>**FIGURE 7:** Screenshot example of metScanR's `mapSiteFinder()` and `siteFinder()` functions.  Around a dozen stations are i) within 50 km of NEON's NIWO station, ii) at an elevation between 3200 & 3800 m ASL, that iii) measure snow depth.</sup>   
+
+From start to finish this entire filtering process took less than 2-minutes.  The user can then utilize other network-specific R packages, such as [RNRCS](https://github.com/rhlee12/RNRCS), to quickly download the data.    
+
+
+### Getting Started:
+
+Install official releases from CRAN with 
+
+```
+#install metScanR:
+install.packages("metScanR")
+#load the package:
+library(metScanR)
+#download and save the most up-to-date database:
+updateDatabase()
+
+```
+If you encounter a bug, please provide a reproducible example on this package's [github issues](https://github.com/jaroberti/metScanR/issues) page. 
+
+### Tutorial:
+
+A tutorial is provided at: https://jaroberti.github.io/metScanR/tutorials/intro.html. 
+
+**Update (2018-09-21)** : Please note, the tutorial is a bit out of date.  We're hoping to update the tutorial in the near future. 
+
+### CRAN PDF: 
+https://cran.r-project.org/web/packages/metScanR/metScanR.pdf
 
 
 ### Future Directions:
