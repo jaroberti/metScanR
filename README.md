@@ -98,7 +98,7 @@ The standardized databases, n-gram traceability, search features, mapping featur
 
 **A quick Example**
 
-A user wishes to search for environmental / meteorological stations nearby a known point of interest (POI).  Using metScanR's `getNearby()` function this can be done in a matter of seconds.  As an example, let's use the search from Figure 4; it took 9.2 seconds to search for and map the 803 stations nearby NEON's NIWO station.  That's a lot of stations among many networks.  But let's say that the researcher wants to find data from nearby sites that has a similar elevation to NEON's NIWO site (3513 m ASL) and also measures snow depth. No problem.  Using the `siteFinder()` function, the user can filter the dataset more specifically to their needs (Figure 7).
+A user wishes to search for environmental / meteorological stations nearby a known point of interest (POI).  Using metScanR's `getNearby()` function this can be done in a matter of seconds.  As an example, let's use the search from Figure 4; it took 9.2 seconds to search for and map the 803 stations nearby NEON's NIWO station.  That's a lot of stations among many networks.  But let's say that the researcher wants to find data from nearby sites that have similar elevations to NEON's NIWO site (3513 m ASL) and measure snow depth. No problem.  Using the `siteFinder()` function, the user can filter the dataset more specifically to their needs (Figure 7).
 
 ![](AMS2018/fig7_2019_02_01.png "Figure 7: Filtered user search.")
 <sup>**FIGURE 7:** Screenshot example of metScanR's `mapSiteFinder()` and `siteFinder()` functions.  Around a dozen stations are i) within 50 km of NEON's NIWO station, ii) at an elevation between 3200 & 3800 m ASL, that iii) measure snow depth.</sup>   
