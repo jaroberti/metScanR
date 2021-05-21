@@ -121,12 +121,6 @@ updateDatabase()
 ```
 If you encounter a bug, please provide a reproducible example on this package's [github issues](https://github.com/jaroberti/metScanR/issues) page. 
 
-### Tutorial:
-
-A tutorial is provided at: https://jaroberti.github.io/metScanR/tutorials/intro.html. 
-
-**Update (2018-09-21)** : Please note, the tutorial is a bit out of date.  We're hoping to update the tutorial in the near future. 
-
 ### CRAN PDF: 
 https://cran.r-project.org/web/packages/metScanR/metScanR.pdf
 
