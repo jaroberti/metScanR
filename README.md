@@ -6,7 +6,7 @@
 
 ## Summary 
 
-Every day thousands of meteorological and environmental data are collected throughout the world. The stations that collect these data are part of many large-, medium-, and small-scale networks throughout the globe.  Some stations are part of multiple networks, have well documented metadata, and their data can be accessed through a handfull of public databases.  Other stations however, have poorly documented metadata and their data are harder to locate and access. The latter makes it difficult and time consuming to answer specific scientific questions (Fig 1). 
+Every day billions of meteorological and environmental measurements are collected throughout the world. The stations that collect these data are part of many large-, medium-, and small-scale networks.  Some stations are part of multiple networks, have well documented metadata, and their data can be accessed through a handfull of public databases.  Other stations however, have poorly documented metadata and their data are harder to locate and access. The latter makes it difficult and time consuming to answer specific scientific questions (Fig 1). 
 
 ![](AMS2018/findingMetadata.png "Figure 1: Breakdown of common metadata availability ")
 <sup>**FIGURE 1** Some metadata are easy to find in many repositories (green box), while other types of metadata are hard to track down (orange box).  This can make searching for environmental monitoring stations of interest painstakingly slow especially if searching for specific criteria.</sup>
